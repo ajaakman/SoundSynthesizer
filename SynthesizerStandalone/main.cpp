@@ -1,6 +1,7 @@
 #pragma comment(lib, "winmm.lib") // Linking winmm library to get access to the waveOut API.
 
 #include <atomic> // Protects the data that can be accessed by multiple threads at the same time.
+#include <mutex>
 #include <Windows.h> // Using this to get audio devices. Includes waveOut API.
 
 const float volumeMultiplier = 0.1f; // Set volume multiplier to low value so you don't blow out your speakers.
@@ -12,6 +13,7 @@ short audioBuffer[blockCount * blockSize]; // Setting type to short which is 2 b
 const int bufferTypeSize = sizeof(audioBuffer[0]); // This needs to match the type size of the audioBuffer[] array forthe right Bit Depth.
 
 std::atomic<int> blocksReady = blockCount; // The number of blocks that need to be filled with audio data in the PlayAudio() function. Decrements when we fill it. Increments when the API signals us that a new block is ready to use through the WaveOutProc() callback function. Atomic since the callback thread can access it.
+std::condition_variable blockIsAvailable; // Pauses thread and unpauses it from another thread. Can only be used with mutex.
 
 HWAVEOUT audioDevice; // Passed into the waveOutOpen() function to set our audio device.
 WAVEHDR waveBlockHeader[blockCount]; // The WAVEHDR structure defines the header used to identify a waveform-audio buffer.
@@ -19,6 +21,8 @@ WAVEHDR waveBlockHeader[blockCount]; // The WAVEHDR structure defines the header
 static void CALLBACK waveOutProc(HWAVEOUT hWaveOut, UINT uMsg, DWORD dwInstance, DWORD dwParam1, DWORD dwParam2) // The waveOutProc function is the callback function used with the waveform-audio output device. Gets called on a separate thread by the API.
 {
 	if (uMsg != WOM_DONE) return; // WOM_DONE is sent when the device driver is finished with a data block sent using the waveOutWrite function.
+	
+	blockIsAvailable.notify_all(); // Notifies all threads waiting on this condition.
 	++blocksReady; // This signals our loop that the audio device is ready to receive another block.
 }
 
@@ -26,23 +30,26 @@ void playAudio() // The looping function that fills and sends our audio data to 
 {	
 	int currentBlock = 0; // Tracks the currently handled block in the playAudio() function.
 	double sampleTime = 0.0; // Based on sample frequency. When filling a block this is used with our supplied audio function.
-
+	
+	std::mutex mutex; // Creating a mutex object to give us the ability to pause this thread later.
+	std::unique_lock<std::mutex> lock(mutex); // Unique lock object manages a mutex object. 
+	
 	while (true) // Infinate loop to keep the audio playing.
 	{		
-		while (blocksReady != 0) // If no empty blocks are left wait for the callback function to give us one before filling it with data.
+		if (blocksReady == 0) // If no blocks are left to fill, pause until the callback function gives us one to fill.
+			blockIsAvailable.wait(lock);
+
+		for (int i = 0; i < blockSize; ++i) // Loop through all the samples in the block and fill the audio buffer with data.
 		{
-			for (int i = 0; i < blockSize; ++i) // Loop through all the samples in the block and fill the audio buffer with data.
-			{
-				audioBuffer[(currentBlock * blockSize) + i] = volumeMultiplier * (sin(440 * 2 * acos(-1) * sampleTime)) * pow(2, (bufferTypeSize * 8) - 1); // Iterating through each sample in the currentBlock = (Volume multiplier to protect us) * (Our audio function * time) * (Scaling our function from (-1 to 1) to correct Bit Depth)
-				sampleTime += (1.0 / sampleRate); // Incrementing our sampleTime by time step.
-			}
-
-			waveOutPrepareHeader(audioDevice, &waveBlockHeader[currentBlock], sizeof(WAVEHDR)); // The waveOutPrepareHeader function prepares a waveform-audio data block for playback.
-			waveOutWrite(audioDevice, &waveBlockHeader[currentBlock], sizeof(WAVEHDR)); // The waveOutWrite function sends a data block to the given waveform-audio output device.
-
-			--blocksReady; // Releasing the block we just processed. APi will signal us when a new block is ready to be processed.			
-			++currentBlock %= blockCount;
+			audioBuffer[(currentBlock * blockSize) + i] = volumeMultiplier * (sin(440 * 2 * acos(-1) * sampleTime)) * pow(2, (bufferTypeSize * 8) - 1); // Iterating through each sample in the currentBlock = (Volume multiplier to protect us) * (Our audio function * time) * (Scaling our function from (-1 to 1) to correct Bit Depth)
+			sampleTime += (1.0 / sampleRate); // Incrementing our sampleTime by time step.
 		}
+
+		waveOutPrepareHeader(audioDevice, &waveBlockHeader[currentBlock], sizeof(WAVEHDR)); // The waveOutPrepareHeader function prepares a waveform-audio data block for playback.
+		waveOutWrite(audioDevice, &waveBlockHeader[currentBlock], sizeof(WAVEHDR)); // The waveOutWrite function sends a data block to the given waveform-audio output device.
+
+		--blocksReady; // Releasing the block we just processed. APi will signal us when a new block is ready to be processed.			
+		++currentBlock %= blockCount;		
 	}
 }
 
@@ -64,11 +71,11 @@ void setupAudioSynthesizer() // Sets up our audio format, links the buffer memor
 	tWaveFormatEx.cbSize = 0; // Specifies the size, in bytes, of extra format information appended to the end of the WAVEFORMATEX structure. 
 
 	waveOutOpen(&audioDevice, 0, &tWaveFormatEx, (DWORD_PTR)waveOutProc, (DWORD_PTR)nullptr, CALLBACK_FUNCTION); // The waveOutOpen function opens the given waveform-audio output device for playback. Using the first audio device the OS finds in this instance.
-	
+		
 	playAudio(); // Starting our audio synthesis loop.
 }
 
 int main() 
-{	
+{		
 	setupAudioSynthesizer();
 }
