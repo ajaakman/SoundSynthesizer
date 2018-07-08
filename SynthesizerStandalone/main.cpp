@@ -1,7 +1,9 @@
 #pragma comment(lib, "winmm.lib") // Linking winmm library to get access to the waveOut API.
 
+#include <iostream>
 #include <atomic> // Protects the data that can be accessed by multiple threads at the same time.
 #include <mutex>
+
 #include <Windows.h> // Using this to get audio devices. Includes waveOut API.
 
 const float volumeMultiplier = 0.1f; // Set volume multiplier to low value so you don't blow out your speakers.
@@ -72,10 +74,12 @@ void setupAudioSynthesizer() // Sets up our audio format, links the buffer memor
 
 	waveOutOpen(&audioDevice, 0, &tWaveFormatEx, (DWORD_PTR)waveOutProc, (DWORD_PTR)nullptr, CALLBACK_FUNCTION); // The waveOutOpen function opens the given waveform-audio output device for playback. Using the first audio device the OS finds in this instance.
 		
-	playAudio(); // Starting our audio synthesis loop.
+	std::thread synthesizerThread(playAudio); // Starting our audio synthesis loop on a new thread.
+	synthesizerThread.detach(); // Detaching the thread will keep it running until the application ends.
 }
 
 int main() 
 {		
 	setupAudioSynthesizer();
+	std::cin.get();
 }
