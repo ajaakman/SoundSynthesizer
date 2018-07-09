@@ -14,7 +14,8 @@ private:
 	static const int sampleRate = 44100; // Used with sampleTime to determine the frequency of sampling our audio function.
 	static const int blockCount = 16; // number of blocks in the audioBuffer.
 	static const int blockSize = 512; // size of blocks in the audioBuffer.
-	bool isAlive = true; // This will stop our infinate loop when the object is destroyed.
+	
+	std::atomic<bool> isAlive = true; // This will stop our infinate loop when the object is destroyed.
 
 	std::atomic<int> blocksReady = blockCount; // The number of blocks that need to be filled with audio data in the PlayAudio() function. Decrements when we fill it. Increments when the API signals us that a new block is ready to use through the WaveOutProc() callback function. Atomic since the callback thread can access it.
 
@@ -60,7 +61,7 @@ private:
 	void playAudio(double(*audioFunction)(double)) // The looping function that fills and sends our audio data to the audio device.
 	{
 		int currentBlock = 0; // Tracks the currently handled block in the playAudio() function.
-		double sampleTime = 0.0; // Based on sample frequency. When filling a block this is used with our supplied audio function.
+		std::atomic<double> sampleTime = 0.0; // Based on sample frequency. When filling a block this is used with our supplied audio function.
 
 		std::mutex mutex; // Creating a mutex object to give us the ability to pause this thread later.
 		std::unique_lock<std::mutex> lock(mutex); // Unique lock object manages a mutex object. 
@@ -73,7 +74,7 @@ private:
 			for (int i = 0; i < blockSize; ++i) // Loop through all the samples in the block and fill the audio buffer with data.
 			{				
 				audioBuffer[(currentBlock * blockSize) + i] = volumeMultiplier * audioFunction(sampleTime) * pow(2, (bufferTypeSize * 8) - 1); // Iterating through each sample in the currentBlock = (Volume multiplier to protect us) * (Our audio function * time) * (Scaling our function from (-1 to 1) to correct Bit Depth)
-				sampleTime += (1.0 / sampleRate); // Incrementing our sampleTime by time step.
+				sampleTime = sampleTime + (1.0 / sampleRate); // Incrementing our sampleTime by time step.
 			}
 
 			waveOutPrepareHeader(audioDevice, &waveBlockHeader[currentBlock], sizeof(WAVEHDR)); // The waveOutPrepareHeader function prepares a waveform-audio data block for playback.
@@ -105,12 +106,14 @@ private:
 	}
 };
 
+double audioOscillator(double sampleTime)
+{
+	return sin(880 * 2 * acos(-1) * sampleTime);
+}
+
 int main() 
-{	
-	{
-		AudioSynthesizer audioSynthesizer; // Plays sine wave at 440 Hz by default.
-		AudioSynthesizer audioSynthesizer1([](double sampleTime) { return sin(880 * 2 * acos(-1) * sampleTime); }); // Pass it a new audio function to play a different sound.
-		std::cin.get();
-	}	
-	std::cin.get(); // When objects go out of scope the thread finishes and memory is released.
+{		
+	AudioSynthesizer audioSynthesizer(audioOscillator); // Pass it a new audio function to play a different sound.
+	
+	std::cin.get();	
 }
