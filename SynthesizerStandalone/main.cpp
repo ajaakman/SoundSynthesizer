@@ -22,30 +22,25 @@ private:
 
 	std::atomic<int> blocksReady = blockCount; // The number of blocks that need to be filled with audio data in the PlayAudio() function. Decrements when we fill it. Increments when the API signals us that a new block is ready to use through the WaveOutProc() callback function. Atomic since the callback thread can access it.
 	
-	std::condition_variable blockIsAvailable; // Pauses thread and unpauses it from another thread. Can only be used with mutex.
-	std::condition_variable objectDestroyed;
+	std::condition_variable blockIsAvailable; // Pauses thread and unpauses it from another thread. Can only be used with mutex.	
+
+	std::thread synthesizerThread; // The audio will be playing in the background on a new thread.
 
 	HWAVEOUT audioDevice; // Passed into the waveOutOpen() function to set our audio device.
 	WAVEHDR waveBlockHeader[blockCount]; // The WAVEHDR structure defines the header used to identify a waveform-audio buffer.	
-
+	
 public:	
 
 	AudioSynthesizer(double(*audioFunction)(double) = [](double sampleTime) { return sin(440 * 2 * acos(-1) * sampleTime); }) // Class takes audio function as parameter. Sine wave playing at 440Hz is played by default.
 	{
 		setupAudioSynthesizer();
-
-		std::thread synthesizerThread(&AudioSynthesizer::playAudio, this, audioFunction); // Starting our audio synthesis loop on a new thread. Passing audioFunction() as parameter.
-
-		synthesizerThread.detach(); // Detaching the thread will keep it running in the background until its wokr is finished.			
+		synthesizerThread = std::thread(&AudioSynthesizer::playAudio, this, audioFunction); // Starting our audio synthesis loop on a new thread. Passing audioFunction() as parameter.					
 	}		
 
 	~AudioSynthesizer()
 	{	
 		isAlive = false; // Stopping the playAudio() loop when the destructor is called.
-
-		std::mutex mutex; 
-		std::unique_lock<std::mutex> lock(mutex);
-		objectDestroyed.wait(lock); // Before we release the memory pause the destructor until the audio thread finishes closing.
+		synthesizerThread.join(); // Wait on the main thread until the playAudio() thread finishes closing down.
 	}
 
 private:
@@ -91,8 +86,6 @@ private:
 
 		waveOutReset(audioDevice); // Before calling waveOutClose, the application must wait for all buffers to finish playing or call the waveOutReset function to terminate playback.
 		waveOutClose(audioDevice); // The close operation fails if the device is still playing a waveform-audio buffer that was previously sent by calling waveOutWrite.
-
-		objectDestroyed.notify_all(); // Unpause the destructor.
 	}
 
 	void setupAudioSynthesizer() // Sets up our audio format, links the buffer memory with the audio device and opens a new device using the supplied format.
