@@ -12,17 +12,18 @@ private:
 
 	const double volumeMultiplier = 0.1f; // Set volume multiplier to low value so you don't blow out your speakers.
 	static const int sampleRate = 44100; // Used with sampleTime to determine the frequency of sampling our audio function.
-	static const int blockCount = 16; // number of blocks in the audioBuffer.
+	static const int blockCount = 8; // number of blocks in the audioBuffer.
 	static const int blockSize = 512; // size of blocks in the audioBuffer.
+	
+	short audioBuffer[blockCount * blockSize]; // Setting type to short which is 2 bytes will give us (2 * 8 = 16) bit audio, int for 32 bit audio. Can also do char for 8 bit... DON'T.
+	const int bufferTypeSize = sizeof(audioBuffer[0]); // This needs to match the type size of the audioBuffer[] array forthe right Bit Depth.
 	
 	std::atomic<bool> isAlive = true; // This will stop our infinate loop when the object is destroyed.
 
 	std::atomic<int> blocksReady = blockCount; // The number of blocks that need to be filled with audio data in the PlayAudio() function. Decrements when we fill it. Increments when the API signals us that a new block is ready to use through the WaveOutProc() callback function. Atomic since the callback thread can access it.
-
-	short audioBuffer[blockCount * blockSize]; // Setting type to short which is 2 bytes will give us (2 * 8 = 16) bit audio, int for 32 bit audio. Can also do char for 8 bit... DON'T.
-	const int bufferTypeSize = sizeof(audioBuffer[0]); // This needs to match the type size of the audioBuffer[] array forthe right Bit Depth.
-
+	
 	std::condition_variable blockIsAvailable; // Pauses thread and unpauses it from another thread. Can only be used with mutex.
+	std::condition_variable objectDestroyed;
 
 	HWAVEOUT audioDevice; // Passed into the waveOutOpen() function to set our audio device.
 	WAVEHDR waveBlockHeader[blockCount]; // The WAVEHDR structure defines the header used to identify a waveform-audio buffer.	
@@ -39,8 +40,12 @@ public:
 	}		
 
 	~AudioSynthesizer()
-	{		
-		isAlive = false; // Stopping the playAudio() loop with the destructor.
+	{	
+		isAlive = false; // Stopping the playAudio() loop when the destructor is called.
+
+		std::mutex mutex; 
+		std::unique_lock<std::mutex> lock(mutex);
+		objectDestroyed.wait(lock); // Before we release the memory pause the destructor until the audio thread finishes closing.
 	}
 
 private:
@@ -64,7 +69,7 @@ private:
 		std::atomic<double> sampleTime = 0.0; // Based on sample frequency. When filling a block this is used with our supplied audio function.
 
 		std::mutex mutex; // Creating a mutex object to give us the ability to pause this thread later.
-		std::unique_lock<std::mutex> lock(mutex); // Unique lock object manages a mutex object. 
+		std::unique_lock<std::mutex> lock(mutex); // Unique lock object manages a mutex object. 		
 		
 		while (isAlive == true) // Loop that keeps the audio playing until destructor is called.
 		{
@@ -83,6 +88,11 @@ private:
 			--blocksReady; // Releasing the block we just processed. APi will signal us when a new block is ready to be processed.			
 			++currentBlock %= blockCount;
 		}
+
+		waveOutReset(audioDevice); // Before calling waveOutClose, the application must wait for all buffers to finish playing or call the waveOutReset function to terminate playback.
+		waveOutClose(audioDevice); // The close operation fails if the device is still playing a waveform-audio buffer that was previously sent by calling waveOutWrite.
+
+		objectDestroyed.notify_all(); // Unpause the destructor.
 	}
 
 	void setupAudioSynthesizer() // Sets up our audio format, links the buffer memory with the audio device and opens a new device using the supplied format.
@@ -106,14 +116,20 @@ private:
 	}
 };
 
-double audioOscillator(double sampleTime)
+double audioOscillator(double sampleTime) // Pass the function to the AudioSynthesizer class as a parameter to get a new sound.
 {
 	return sin(880 * 2 * acos(-1) * sampleTime);
 }
 
 int main() 
-{		
-	AudioSynthesizer audioSynthesizer(audioOscillator); // Pass it a new audio function to play a different sound.
-	
-	std::cin.get();	
+{
+	{
+		AudioSynthesizer audioSynthesizer(audioOscillator);
+		std::cin.get();
+	}
+	std::cin.get();
+	AudioSynthesizer* audioSynthesizer = new AudioSynthesizer(audioOscillator);
+	std::cin.get();
+	delete audioSynthesizer;
+	std::cin.get();
 }
