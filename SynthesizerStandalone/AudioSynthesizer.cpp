@@ -3,7 +3,7 @@
 AudioSynthesizer::AudioSynthesizer(double(*audioFunction)(double)) // Class takes audio function as parameter. Sine wave playing at 440Hz is played by default.
 {
 	setupAudioSynthesizer();
-	synthesizerThread = std::thread(&AudioSynthesizer::playAudio, this, audioFunction); // Starting our audio synthesis loop on a new thread. Passing audioFunction() as parameter.					
+	synthesizerThread = std::thread(&AudioSynthesizer::playAudio, this, audioFunction); // Starting our audio synthesis loop on a new thread. Passing audioFunction() as parameter.	
 }
 
 AudioSynthesizer::~AudioSynthesizer()
@@ -12,15 +12,15 @@ AudioSynthesizer::~AudioSynthesizer()
 	synthesizerThread.join(); // Wait on the main thread until the playAudio() thread finishes closing down.
 }
 
-void CALLBACK AudioSynthesizer::waveOutProcInst(HWAVEOUT hwo, UINT uMsg, DWORD dwParam1, DWORD dwParam2) // Callback instance function unique to each object.
+void CALLBACK AudioSynthesizer::waveOutProcInst(HWAVEOUT hwo, UINT uMsg, DWORD_PTR dwParam1, DWORD_PTR dwParam2) // Callback instance function unique to each object. Must be DWORD_PTR for 64 bit to work.
 {
 	if (uMsg != WOM_DONE) return; // WOM_DONE is sent when the device driver is finished with a data block sent using the waveOutWrite function.
 
-	blockIsAvailable.notify_all(); // Notifies all threads waiting on this condition.
 	++blocksReady; // This signals our loop that the audio device is ready to receive another block.
+	blockIsAvailable.notify_all(); // Notifies all threads waiting on this condition.
 }
 
-void CALLBACK AudioSynthesizer::waveOutProc(HWAVEOUT hwo, UINT uMsg, DWORD dwInstance, DWORD dwParam1, DWORD dwParam2) // The waveOutProc function is the callback function used with the waveform-audio output device. Gets called on a separate thread by the API.
+void CALLBACK AudioSynthesizer::waveOutProc(HWAVEOUT hwo, UINT uMsg, DWORD_PTR dwInstance, DWORD_PTR dwParam1, DWORD_PTR dwParam2) // The waveOutProc function is the callback function used with the waveform-audio output device. Gets called on a separate thread by the API.
 {
 	((AudioSynthesizer*)dwInstance)->waveOutProcInst(hwo, uMsg, dwParam1, dwParam2); // Local instance callback function is created.
 }
