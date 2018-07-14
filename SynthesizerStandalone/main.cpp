@@ -1,5 +1,6 @@
 #include "AudioSynthesizer.h" // Using Win SDK Version 10.0.17134.0
 #include <iostream>
+#include <memory>
 
 double audioOscillator(double sampleTime) // Pass the function to the AudioSynthesizer class as a parameter to get a new sound.
 {
@@ -9,15 +10,15 @@ double audioOscillator(double sampleTime) // Pass the function to the AudioSynth
 int main() 
 {
 	{
-		AudioSynthesizer audioSynthesizer(audioOscillator);
-		AudioSynthesizer audioSynthesizer1;
+		AudioSynthesizer audioSynthesizer;
+		AudioSynthesizer audioSynthesizer1(audioOscillator);
 		std::cin.get();
 	}
-	std::cin.get();
-	AudioSynthesizer* audioSynthesizer = new AudioSynthesizer(audioOscillator);
-	AudioSynthesizer* audioSynthesizer1 = new AudioSynthesizer;
-	std::cin.get();
-	delete audioSynthesizer;
-	delete audioSynthesizer1;
+	{
+		std::cin.get();
+		std::unique_ptr<AudioSynthesizer> audioSynthesizer = std::make_unique<AudioSynthesizer>();
+		std::unique_ptr<AudioSynthesizer> audioSynthesizer1 = std::make_unique<AudioSynthesizer>(audioOscillator);
+		std::cin.get();
+	}
 	std::cin.get();
 }
