@@ -35,8 +35,8 @@ private:
 	std::atomic<int> blocksReady = blockCount; // The number of blocks that need to be filled with audio data in the PlayAudio() function. Decrements when we fill it. Increments when the API signals us that a new block is ready to use through the WaveOutProc() callback function. Atomic since the callback thread can access it.
 	
 	std::atomic<bool> isAlive = true; // This will stop our infinate loop when the object is destroyed.
-
-	short audioBuffer[blockCount * blockSize]; // Setting type to short which is 2 bytes will give us (2 * 8 = 16) bit audio, int for 32 bit audio. Can also do char for 8 bit... DON'T.
+	// Using a unique_ptr ensures that the memory is released when the object is destoryed.
+	std::unique_ptr<short[]> audioBuffer = std::make_unique<short[]>(blockCount * blockSize); // Setting type to short which is 2 bytes will give us (2 * 8 = 16) bit audio, int for 32 bit audio. Can also do char for 8 bit... DON'T.
 	const int bufferTypeSize = sizeof(audioBuffer[0]); // This needs to match the type size of the audioBuffer[] array forthe right Bit Depth.
 	
 	std::condition_variable blockIsAvailable; // Pauses thread and unpauses it from another thread. Can only be used with mutex.	

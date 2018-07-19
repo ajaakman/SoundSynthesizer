@@ -9,7 +9,7 @@ AudioSynthesizer::AudioSynthesizer(double(*audioFunction)(double)) // Class take
 AudioSynthesizer::~AudioSynthesizer()
 {
 	isAlive = false; // Stopping the playAudio() loop when the destructor is called.
-	synthesizerThread.join(); // Wait on the main thread until the playAudio() thread finishes closing down.
+	synthesizerThread.join(); // Wait on the main thread until the playAudio() thread finishes closing down the audioDevice.
 }
 
 void CALLBACK AudioSynthesizer::waveOutProcInst(HWAVEOUT hwo, UINT uMsg, DWORD_PTR dwParam1, DWORD_PTR dwParam2) // Callback instance function unique to each object. Must be DWORD_PTR for 64 bit to work.
@@ -59,7 +59,7 @@ void AudioSynthesizer::setupAudioSynthesizer() // Sets up our audio format, link
 {
 	for (int i = 0; i < blockCount; ++i) // Each waveBlockHeader needs to be linked with our buffer.
 	{
-		waveBlockHeader[i].lpData = (LPSTR)(blockSize * i + audioBuffer); // Pointer to the waveform buffer. Pointer to our audioBuffer + the offset.
+		waveBlockHeader[i].lpData = (LPSTR)(blockSize * i + audioBuffer.get()); // Pointer to the waveform buffer. Memory offset + pointer to our memory.
 		waveBlockHeader[i].dwBufferLength = blockSize * bufferTypeSize; // Length, in bytes, of the buffer.
 	}
 
