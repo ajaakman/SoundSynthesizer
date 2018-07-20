@@ -40,7 +40,7 @@ void AudioSynthesizer::playAudio() // The looping function that fills and sends 
 
 		for (int i = 0; i < blockSize; ++i) // Loop through all the samples in the block and fill the audio buffer with data.
 		{
-			audioBuffer[(currentBlock * blockSize) + i] = volumeMultiplier * waveformFunction(sampleTime) * pow(2, (bufferTypeSize * 8) - 1); // Iterating through each sample in the currentBlock = (Volume multiplier to protect us) * (Our audio function * time) * (Scaling our function from (-1 to 1) to correct Bit Depth)
+			audioBuffer[(currentBlock * blockSize) + i] = volumeMultiplier * waveformFunction(sampleTime) * pow(2, (bufferTypeSize * 8) - 1); // Iterating through each sample in the currentBlock = (Volume multiplier to protect us) * (Our audio function * time) * (Scaling our function from (-1 to 1) to correct Bit Depth). WaveformFunction() gets inherited from the AudioWavefrom class.
 			sampleTime = sampleTime + (1.0 / sampleRate); // Incrementing our sampleTime by time step.
 		}
 

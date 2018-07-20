@@ -9,7 +9,7 @@
 
 #include "AudioWaveform.h"
 
-class AudioSynthesizer : public AudioWaveform
+class AudioSynthesizer : public AudioWaveform // Inheriting the audio functions that will allow us to change the generated sound wave at runtime.
 {
 public:
 
