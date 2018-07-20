@@ -21,9 +21,15 @@
     <ClCompile Include="AudioSynthesizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AudioWaveform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSynthesizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioWaveform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

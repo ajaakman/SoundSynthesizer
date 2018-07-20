@@ -7,11 +7,13 @@
 #include <atomic> // Protects the data that can be accessed by multiple threads at the same time.
 #include <mutex>
 
-class AudioSynthesizer
+#include "AudioWaveform.h"
+
+class AudioSynthesizer : public AudioWaveform
 {
 public:
 
-	AudioSynthesizer(double(*audioFunction)(double) = [](double sampleTime) { return sin(440 * 2 * acos(-1) * sampleTime); }); // Class takes audio function as parameter. Sine wave playing at 440Hz is played by default.
+	AudioSynthesizer(); // Class takes audio function as parameter. Sine wave playing at 440Hz is played by default.
 	
 	~AudioSynthesizer();	
 
@@ -21,7 +23,7 @@ private:
 
 	static void CALLBACK waveOutProc(HWAVEOUT hwo, UINT uMsg, DWORD_PTR dwInstance, DWORD_PTR dwParam1, DWORD_PTR dwParam2); // The waveOutProc function is the callback function used with the waveform-audio output device. Gets called on a separate thread by the API.
 	
-	void playAudio(double(*audioFunction)(double)); // The looping function that fills and sends our audio data to the audio device.	
+	void playAudio(); // The looping function that fills and sends our audio data to the audio device.	
 
 	void setupAudioSynthesizer(); // Sets up our audio format, links the buffer memory with the audio device and opens a new device using the supplied format.
 	

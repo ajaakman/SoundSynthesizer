@@ -1,9 +1,9 @@
 #include "AudioSynthesizer.h"
 
-AudioSynthesizer::AudioSynthesizer(double(*audioFunction)(double)) // Class takes audio function as parameter. Sine wave playing at 440Hz is played by default.
+AudioSynthesizer::AudioSynthesizer() // Class takes audio function as parameter. Sine wave playing at 440Hz is played by default.
 {
 	setupAudioSynthesizer();
-	synthesizerThread = std::thread(&AudioSynthesizer::playAudio, this, audioFunction); // Starting our audio synthesis loop on a new thread. Passing audioFunction() as parameter.	
+	synthesizerThread = std::thread(&AudioSynthesizer::playAudio, this); // Starting our audio synthesis loop on a new thread. Passing audioFunction() as parameter.	
 }
 
 AudioSynthesizer::~AudioSynthesizer()
@@ -25,7 +25,7 @@ void CALLBACK AudioSynthesizer::waveOutProc(HWAVEOUT hwo, UINT uMsg, DWORD_PTR d
 	((AudioSynthesizer*)dwInstance)->waveOutProcInst(hwo, uMsg, dwParam1, dwParam2); // Local instance callback function is created.
 }
 
-void AudioSynthesizer::playAudio(double(*audioFunction)(double)) // The looping function that fills and sends our audio data to the audio device.
+void AudioSynthesizer::playAudio() // The looping function that fills and sends our audio data to the audio device.
 {
 	int currentBlock = 0; // Tracks the currently handled block in the playAudio() function.
 	std::atomic<double> sampleTime = 0.0; // Based on sample frequency. When filling a block this is used with our supplied audio function.
@@ -40,7 +40,7 @@ void AudioSynthesizer::playAudio(double(*audioFunction)(double)) // The looping 
 
 		for (int i = 0; i < blockSize; ++i) // Loop through all the samples in the block and fill the audio buffer with data.
 		{
-			audioBuffer[(currentBlock * blockSize) + i] = volumeMultiplier * audioFunction(sampleTime) * pow(2, (bufferTypeSize * 8) - 1); // Iterating through each sample in the currentBlock = (Volume multiplier to protect us) * (Our audio function * time) * (Scaling our function from (-1 to 1) to correct Bit Depth)
+			audioBuffer[(currentBlock * blockSize) + i] = volumeMultiplier * waveformFunction(sampleTime) * pow(2, (bufferTypeSize * 8) - 1); // Iterating through each sample in the currentBlock = (Volume multiplier to protect us) * (Our audio function * time) * (Scaling our function from (-1 to 1) to correct Bit Depth)
 			sampleTime = sampleTime + (1.0 / sampleRate); // Incrementing our sampleTime by time step.
 		}
 
