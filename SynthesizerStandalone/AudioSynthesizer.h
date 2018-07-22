@@ -29,23 +29,23 @@ private:
 	
 private:
 
-	const double volumeMultiplier = 0.1f; // Set volume multiplier to low value so you don't blow out your speakers.
-	static const int sampleRate = 44100; // Used with sampleTime to determine the frequency of sampling our audio function.
-	static const int blockSize = 512; // size of blocks in the audioBuffer.
-	static const int blockCount = 8; // number of blocks in the audioBuffer.
+	const double m_dbVOLUME_MULTIPLIER = 0.1f; // Set volume multiplier to low value so you don't blow out your speakers.
+	static const int s_iSAMPLE_FREQUENCY = 44100; // Used with dbSampleTime to determine the frequency of sampling our audio function.
+	static const int s_iBLOCK_SIZE = 512; // size of blocks in the m_arrAudioBuffer.
+	static const int s_iBLOCK_COUNT = 8; // number of blocks in the m_arrAudioBuffer.
 
-	std::atomic<int> blocksReady = blockCount; // The number of blocks that need to be filled with audio data in the PlayAudio() function. Decrements when we fill it. Increments when the API signals us that a new block is ready to use through the WaveOutProc() callback function. Atomic since the callback thread can access it.
+	std::atomic<int> m_iBlocksReady = s_iBLOCK_COUNT; // The number of blocks that need to be filled with audio data in the playAudio() function. Decrements when we fill it. Increments when the API signals us that a new block is ready to use through the waveOutProc() callback function. Atomic since the callback thread can access it.
 	
-	std::atomic<bool> isAlive = true; // This will stop our infinate loop when the object is destroyed.
+	std::atomic<bool> m_bIsAlive = true; // This will stop our infinate loop when the object is destroyed.
 	// Using a unique_ptr ensures that the memory is released when the object is destoryed.
-	std::unique_ptr<short[]> audioBuffer = std::make_unique<short[]>(blockCount * blockSize); // Setting type to short which is 2 bytes will give us (2 * 8 = 16) bit audio, int for 32 bit audio. Can also do char for 8 bit... DON'T.
-	const int bufferTypeSize = sizeof(audioBuffer[0]); // This needs to match the type size of the audioBuffer[] array forthe right Bit Depth.
+	std::unique_ptr<short[]> m_arrAudioBuffer = std::make_unique<short[]>(s_iBLOCK_COUNT * s_iBLOCK_SIZE); // Setting type to short which is 2 bytes will give us (2 * 8 = 16) bit audio, int for 32 bit audio. Can also do char for 8 bit... DON'T.
+	const int m_iBUFFER_TYPE_SIZE = sizeof(m_arrAudioBuffer[0]); // This needs to match the type size of the m_arrAudioBuffer[] array forthe right Bit Depth.
 	
-	std::condition_variable blockIsAvailable; // Pauses thread and unpauses it from another thread. Can only be used with mutex.	
+	std::condition_variable m_cvBlockIsAvailable; // Pauses thread and unpauses it from another thread. Can only be used with mutex.	
 
 	std::thread synthesizerThread; // The audio will be playing in the background on a new thread.
 
 	HWAVEOUT audioDevice; // Passed into the waveOutOpen() function to set our audio device.
-	WAVEHDR waveBlockHeader[blockCount]; // The WAVEHDR structure defines the header used to identify a waveform-audio buffer.
+	WAVEHDR waveBlockHeader[s_iBLOCK_COUNT]; // The WAVEHDR structure defines the header used to identify a waveform-audio buffer.
 
 };

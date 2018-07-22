@@ -7,18 +7,19 @@ class AudioWaveform // This class contains audio function used by the AudioSynth
 {
 private:
 
-	std::atomic<int> waveFrequency = 440;
-	std::atomic<float> waveAmplitude = 0.0f;
+	std::atomic<int> m_iWaveFrequency = 440;
+	std::atomic<double> m_dbWaveAmplitude = 0.0;
 
 protected:
 
-	double waveformFunction(double sampleTime);
+	double waveformFunction(double dbSampleTime);
 
 public:
-	// Oscillator frequency. Range 1 - 20000.
-	void setWaveFrequency(int newFrequency);
-	// Amplitude multiplier. Range 0.0f - 1.0f.
-	void setWaveAmplitude(float newAmplitude);
+
+	// Oscillator frequency. Range int 1 - 20000.
+	void setWaveFrequency(int iNewFrequency);
+	// Amplitude multiplier. Range double 0.0 - 1.0.
+	void setWaveAmplitude(double dbNewAmplitude);
 
 };
 

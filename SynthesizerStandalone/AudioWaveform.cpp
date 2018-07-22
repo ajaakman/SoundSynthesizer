@@ -1,26 +1,26 @@
 #include "AudioWaveform.h"
 
-double AudioWaveform::waveformFunction(double sampleTime)
+double AudioWaveform::waveformFunction(double dbSampleTime)
 {
-	return waveAmplitude * (sin(waveFrequency * 2 * acos(-1) * sampleTime));
+	return m_dbWaveAmplitude * (sin(m_iWaveFrequency * 2 * acos(-1) * dbSampleTime));
 }
 
-void AudioWaveform::setWaveFrequency(int newFrequency)
+void AudioWaveform::setWaveFrequency(int iNewFrequency)
 {
-	if (newFrequency < 1)
-		waveFrequency = 1;
-	else if (newFrequency > 20000)
-		waveFrequency = 20000;
+	if (iNewFrequency < 1)
+		m_iWaveFrequency = 1;
+	else if (iNewFrequency > 20000)
+		m_iWaveFrequency = 20000;
 	else
-		waveFrequency = newFrequency;
+		m_iWaveFrequency = iNewFrequency;
 }
 
-void AudioWaveform::setWaveAmplitude(float newAmplitude)
+void AudioWaveform::setWaveAmplitude(double dbNewAmplitude)
 {
-	if (newAmplitude > 1.0f)
-		waveAmplitude = 1.0f;
-	else if (newAmplitude < 0.0f)
-		waveAmplitude = 0.0f;
+	if (dbNewAmplitude > 1.0)
+		m_dbWaveAmplitude = 1.0;
+	else if (dbNewAmplitude < 0.0)
+		m_dbWaveAmplitude = 0.0;
 	else
-		waveAmplitude = newAmplitude;
+		m_dbWaveAmplitude = dbNewAmplitude;
 }
