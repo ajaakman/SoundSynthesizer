@@ -4,7 +4,7 @@
 
 int main() 
 {		
-		AudioSynthesizer audioSynthesizer;
+		audio::AudioSynthesizer audioSynthesizer;
 		audioSynthesizer.setWaveAmplitude(1.0);
 		audioSynthesizer.setWaveFrequency(440);
 		std::cin.get();	
