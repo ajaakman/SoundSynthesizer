@@ -1,7 +1,8 @@
 #pragma once
 
 #include <math.h>
-#include <atomic>
+//#include <atomic>
+#include <boost/atomic.hpp>
 
 namespace audio 
 {
@@ -9,8 +10,8 @@ namespace audio
 	{
 	private:
 
-		std::atomic<int> m_iWaveFrequency = 440;
-		std::atomic<double> m_dbWaveAmplitude = 0.0;
+		boost::atomic<int> m_iWaveFrequency = 440;
+		boost::atomic<double> m_dbWaveAmplitude = 0.0;
 
 	protected:
 
