@@ -15,30 +15,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AudioSynthesizer.cpp">
+    <ClCompile Include="src\GUI\SynthesizerWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AudioWaveform.cpp">
+    <ClCompile Include="src\Audio\AudioSynthesizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SynthesizerWindow.cpp">
+    <ClCompile Include="src\Audio\AudioWaveform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AudioSynthesizer.h">
+    <ClInclude Include="src\GUI\BaseWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AudioWaveform.h">
+    <ClInclude Include="src\GUI\SynthesizerWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BaseWindow.h">
+    <ClInclude Include="src\Audio\AudioSynthesizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SynthesizerWindow.h">
+    <ClInclude Include="src\Audio\AudioWaveform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
