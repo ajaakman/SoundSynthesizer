@@ -24,12 +24,21 @@
     <ClCompile Include="AudioWaveform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SynthesizerWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSynthesizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AudioWaveform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SynthesizerWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
