@@ -1,6 +1,5 @@
 #include "SynthesizerWindow.h"
 #include <iostream>
-// Recalculate drawing layout when the size of the window changes.
 
 LRESULT SynthesizerWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) // Respond to window messages.
 {
@@ -27,10 +26,14 @@ LRESULT SynthesizerWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam
 	case WM_SIZE:
 		Resize();
 		return 0;
+
 	case WM_LBUTTONDOWN:
-		std::cout << "Mouse X: "<< GET_X_LPARAM(lParam) << " Mouse Y: " << GET_Y_LPARAM(lParam) << std::endl;
-		break;
-		//return 0;
+		OnLButtonDown(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));		
+		return 0;
+
+	case WM_LBUTTONUP:
+		OnLButtonUp();
+		return 0;
 	}
 	return DefWindowProc(m_hwnd, uMsg, wParam, lParam); // Default action.
 }
@@ -75,7 +78,11 @@ void SynthesizerWindow::OnPaint() // Draws the circle.
 
 		pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::LightGray)); // Fills entire render target with a solid color.
 		pRenderTarget->FillEllipse(ellipse, pBrush); // Draws a filled ellipse.
-		//pRenderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(20, D2D1::Point2F(100, 100)));
+		pBrush->SetColor(D2D1::ColorF(0.8f, 0.2f, 0.0f));
+
+		pRenderTarget->FillRoundedRectangle(rectangle, pBrush); // Draws a filled ellipse.
+		pBrush->SetColor(D2D1::ColorF(D2D1::ColorF::Black));
+		pRenderTarget->DrawRoundedRectangle(rectangle, pBrush, 5.0f);
 
 		hr = pRenderTarget->EndDraw(); // Signals end of drawing.
 		if (FAILED(hr) || hr == D2DERR_RECREATE_TARGET)
@@ -109,7 +116,8 @@ void SynthesizerWindow::CalculateLayout() // Creates ellipse based on render tar
 		const float x = size.width / 2;
 		const float y = size.height / 2;
 		const float radius = min(x, y);
-		ellipse = D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius);
+		ellipse = D2D1::Ellipse(D2D1::Point2F(x+200, y+200), radius-200, radius-200);
+		rectangle = D2D1::RoundedRect( D2D1::RectF(5.0f, 5.0f, size.width / 8.0f - 5.0f, size.height - 5.0f), 8.0f, 8.0f);;
 	}
 }
 
@@ -117,4 +125,19 @@ void SynthesizerWindow::DiscardGraphicsResources() // If device is lost.
 {
 	SafeRelease(&pRenderTarget);
 	SafeRelease(&pBrush);
+}
+
+void SynthesizerWindow::OnLButtonDown(int pixelX, int pixelY)
+{
+	std::cout << "Mouse X: " << pixelX << " Mouse Y: " << pixelY << std::endl;
+	audioSynthesizer.setWaveAmplitude(1.0);
+	if (pixelX > 200)
+		audioSynthesizer.setWaveFrequency(440);
+	else
+		audioSynthesizer.setWaveFrequency(480);
+}
+
+void SynthesizerWindow::OnLButtonUp()
+{
+	audioSynthesizer.setWaveAmplitude(0.0);
 }

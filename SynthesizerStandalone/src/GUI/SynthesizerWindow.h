@@ -5,6 +5,7 @@
 #pragma comment(lib, "d2d1")
 
 #include "BaseWindow.h"
+#include "AudioSynthesizer.h" 
 
 class SynthesizerWindow : public BaseWindow<SynthesizerWindow>
 {
@@ -19,12 +20,16 @@ private:
 	ID2D1HwndRenderTarget   *pRenderTarget; // Render target that is associated with the application window.
 	ID2D1SolidColorBrush    *pBrush; // Solid color brush to paint the circle.
 	D2D1_ELLIPSE            ellipse;
+	D2D1_ROUNDED_RECT       rectangle;
+	audio::AudioSynthesizer audioSynthesizer;
 
 	HRESULT CreateGraphicsResources(); // Create render target and brush.
 	void    OnPaint(); // Draws the circle.
 	void    Resize();
 	void    CalculateLayout(); // Creates ellipse based on render targets size.
 	void    DiscardGraphicsResources(); // If device is lost.
+	void    OnLButtonDown(int pixelX, int pixelY);
+	void    OnLButtonUp();
 
 };
 
