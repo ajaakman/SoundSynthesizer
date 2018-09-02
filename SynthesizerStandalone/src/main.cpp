@@ -15,12 +15,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow)
 	freopen("conout$", "w", stderr);
 #endif
 
-	SynthesizerWindow win;
+	gui::SynthesizerWindow window;
 
-	if (!win.Create(L"Audio Synthesizer", WS_OVERLAPPEDWINDOW)) // Create window with name "Synthesizer" and style Overlapped.
+	if (!window.Create(L"Audio Synthesizer", WS_OVERLAPPEDWINDOW)) // Create window with name "Synthesizer" and style Overlapped.
 		return 0; // Exit if couldn't create window.
 
-	ShowWindow(win.Window(), nCmdShow);
+	ShowWindow(window.Window(), nCmdShow);
 
 	MSG msg = {};
 	while (GetMessage(&msg, NULL, 0, 0)) // Run the message loop.
