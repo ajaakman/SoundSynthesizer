@@ -15,7 +15,8 @@ namespace gui {
 	{
 	public:
 
-		SynthesizerWindow() : pFactory(NULL), pRenderTarget(NULL), p_GradiantBrush(NULL) {}
+		SynthesizerWindow();
+		~SynthesizerWindow();
 
 		PCWSTR  ClassName() const { return L"Circle Window Class"; } // Register the window class. // Window class. Defines the type of windos we're creating.
 		LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -23,13 +24,14 @@ namespace gui {
 		ID2D1Factory						*pFactory; // The Dierect2D factory creates Render targets and Device-idnependant resources, such as stroke styles and geometries.
 		ID2D1HwndRenderTarget				*pRenderTarget; // Render target that is associated with the application window.
 		ID2D1LinearGradientBrush			*p_GradiantBrush;	
-		std::array<D2D1_ROUNDED_RECT, 8>	 m_WhiteKeys;
-		std::array<D2D1_ROUNDED_RECT, 6>	 m_BlackKeys;
+		std::array<D2D1_ROUNDED_RECT, 14>	 m_PianoKeys;
 		audio::AudioSynthesizer				 m_AudioSynthesizer;
 
 		D2D1_GRADIENT_STOP					 m_GradientStops[2];
 		ID2D1GradientStopCollection			*p_GradientStops = NULL;
 		
+		float								m_NumofWhiteKeys;
+
 		HRESULT CreateGraphicsResources(); // Create render target and brush.
 		void    OnPaint(); // Draws the circle.
 		void    Resize();
@@ -37,6 +39,10 @@ namespace gui {
 		void    DiscardGraphicsResources(); // If device is lost.
 		void    OnLButtonDown(int pixelX, int pixelY);
 		void    OnLButtonUp();
+		bool	HitTest(float x, float y , D2D1_ROUNDED_RECT key); // Check to see which key the user clicked.
+		bool	IsKeyWhite(int key);
+		bool	IsBlackKeySkip(int key);
+		void    PianoKeyPress(int key);
 
 	};
 
