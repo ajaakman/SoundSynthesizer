@@ -24,8 +24,9 @@ namespace gui {
 		ID2D1Factory						*pFactory; // The Dierect2D factory creates Render targets and Device-idnependant resources, such as stroke styles and geometries.
 		ID2D1HwndRenderTarget				*pRenderTarget; // Render target that is associated with the application window.
 		ID2D1LinearGradientBrush			*p_GradiantBrush;	
-		std::array<D2D1_ROUNDED_RECT, 14>	 m_PianoKeys;
+		std::array<D2D1_ROUNDED_RECT, 21>	 m_PianoKeys;
 		audio::AudioSynthesizer				 m_AudioSynthesizer;
+		std::array<int, 20>					 m_KeyCodes{ 81, 50, 87, 51, 69, 82, 53, 84, 54, 89, 55, 85, 73, 57, 79, 48, 80, 219, 187, 221 };
 
 		D2D1_GRADIENT_STOP					 m_GradientStops[2];
 		ID2D1GradientStopCollection			*p_GradientStops = NULL;

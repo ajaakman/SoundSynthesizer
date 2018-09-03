@@ -51,6 +51,20 @@ namespace gui {
 		case WM_LBUTTONUP:
 			OnLButtonUp();
 			return 0;
+
+		case WM_KEYDOWN:
+			std::cout << wParam << std::endl;
+
+			for (int i = 0; i < m_KeyCodes.size(); ++i)
+			{
+				if (m_KeyCodes[i] == wParam)
+					PianoKeyPress(i);
+			}			
+			return 0;
+
+		case WM_KEYUP:
+			OnLButtonUp();
+			return 0;
 		}
 		return DefWindowProc(m_hwnd, uMsg, wParam, lParam); // Default action.
 	}
@@ -115,7 +129,7 @@ namespace gui {
 			for (int i = 0; i < m_PianoKeys.size(); ++i) // White Key Fill.
 			{
 				m_GradientStops[0].color = D2D1::ColorF(D2D1::ColorF::DarkGray, 1);
-				m_GradientStops[1].color = D2D1::ColorF(D2D1::ColorF::Gainsboro, 1);
+				m_GradientStops[1].color = D2D1::ColorF(D2D1::ColorF::White, 1);
 				if (IsKeyWhite(i))
 				{
 					pRenderTarget->CreateGradientStopCollection(m_GradientStops, 2, D2D1_GAMMA_2_2, D2D1_EXTEND_MODE_CLAMP, &p_GradientStops);
@@ -283,16 +297,8 @@ namespace gui {
 	}
 
 	void SynthesizerWindow::PianoKeyPress(int key)
-	{
-		std::cout << key << std::endl;
-		m_AudioSynthesizer.setWaveAmplitude(1.0);
-		switch (key) 
-		{
-			case 0: m_AudioSynthesizer.setWaveFrequency(440); break;
-			case 1: m_AudioSynthesizer.setWaveFrequency(470); break;
-			case 2: m_AudioSynthesizer.setWaveFrequency(500); break;
-			case 3: m_AudioSynthesizer.setWaveFrequency(530); break;
-			default: m_AudioSynthesizer.setWaveFrequency(650); break;
-		}
+	{		
+		m_AudioSynthesizer.setWaveAmplitude(1.0);		
+		m_AudioSynthesizer.setWaveFrequency(261.63 * pow(pow(2.0, 1.0 /12.0), key));
 	}
 }
