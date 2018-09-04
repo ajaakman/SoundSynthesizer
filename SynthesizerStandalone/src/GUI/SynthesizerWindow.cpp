@@ -52,9 +52,7 @@ namespace gui {
 			OnLButtonUp();
 			return 0;
 
-		case WM_KEYDOWN:
-			std::cout << wParam << std::endl;
-
+		case WM_KEYDOWN:			
 			for (int i = 0; i < m_KeyCodes.size(); ++i)
 			{
 				if (m_KeyCodes[i] == wParam)
@@ -63,7 +61,11 @@ namespace gui {
 			return 0;
 
 		case WM_KEYUP:
-			OnLButtonUp();
+			for (int i = 0; i < m_KeyCodes.size(); ++i)
+			{
+				if (m_KeyCodes[i] == wParam)
+					KeyReleasedUp(i);					
+			}
 			return 0;
 		}
 		return DefWindowProc(m_hwnd, uMsg, wParam, lParam); // Default action.
@@ -128,10 +130,19 @@ namespace gui {
 			}
 			for (int i = 0; i < m_PianoKeys.size(); ++i) // White Key Fill.
 			{
-				m_GradientStops[0].color = D2D1::ColorF(D2D1::ColorF::DarkGray, 1);
-				m_GradientStops[1].color = D2D1::ColorF(D2D1::ColorF::White, 1);
 				if (IsKeyWhite(i))
 				{
+					if (m_bIsKeyPressed[i] == true)
+					{
+						m_GradientStops[0].color = D2D1::ColorF(D2D1::ColorF::DimGray, 1);
+						m_GradientStops[1].color = D2D1::ColorF(D2D1::ColorF::Gainsboro, 1);
+					}
+					else
+					{
+						m_GradientStops[0].color = D2D1::ColorF(D2D1::ColorF::DarkGray, 1);
+						m_GradientStops[1].color = D2D1::ColorF(D2D1::ColorF::White, 1);
+					}
+
 					pRenderTarget->CreateGradientStopCollection(m_GradientStops, 2, D2D1_GAMMA_2_2, D2D1_EXTEND_MODE_CLAMP, &p_GradientStops);
 					pRenderTarget->CreateLinearGradientBrush(D2D1::LinearGradientBrushProperties(D2D1::Point2F(m_PianoKeys[i].rect.left, m_PianoKeys[i].rect.top), D2D1::Point2F(m_PianoKeys[i].rect.right, m_PianoKeys[i].rect.bottom* 2.5f)), p_GradientStops, &p_GradiantBrush);
 					pRenderTarget->FillRoundedRectangle(m_PianoKeys[i], p_GradiantBrush);
@@ -154,10 +165,18 @@ namespace gui {
 			}
 			for (int i = 0; i < m_PianoKeys.size(); ++i) // Black Key Fill.
 			{
-				m_GradientStops[0].color = D2D1::ColorF(D2D1::ColorF::Black, 1);
-				m_GradientStops[1].color = D2D1::ColorF(D2D1::ColorF::DimGray, 1);
 				if (!IsKeyWhite(i))
 				{
+					if (m_bIsKeyPressed[i] == true)
+					{
+						m_GradientStops[0].color = D2D1::ColorF(D2D1::ColorF::DimGray, 1);
+						m_GradientStops[1].color = D2D1::ColorF(D2D1::ColorF::Gray, 1);
+					}
+					else
+					{
+						m_GradientStops[0].color = D2D1::ColorF(D2D1::ColorF::Black, 1);
+						m_GradientStops[1].color = D2D1::ColorF(D2D1::ColorF::DimGray, 1);
+					}
 					pRenderTarget->CreateGradientStopCollection(m_GradientStops, 2, D2D1_GAMMA_2_2, D2D1_EXTEND_MODE_CLAMP, &p_GradientStops);
 					pRenderTarget->CreateLinearGradientBrush(D2D1::LinearGradientBrushProperties(D2D1::Point2F(m_PianoKeys[i].rect.left, m_PianoKeys[i].rect.top), D2D1::Point2F(m_PianoKeys[i].rect.right, m_PianoKeys[i].rect.bottom* 3.5f)), p_GradientStops, &p_GradiantBrush);
 					pRenderTarget->FillRoundedRectangle(m_PianoKeys[i], p_GradiantBrush);
@@ -235,14 +254,13 @@ namespace gui {
 
 	void SynthesizerWindow::OnLButtonDown(int pixelX, int pixelY)
 	{
-		//std::cout << "Mouse X: " << pixelX << " Mouse Y: " << pixelY << std::endl;		
-
 		for (int i = 0; i < m_PianoKeys.size(); ++i)
 		{		
 			if (!IsKeyWhite(i)) // Black Keys
 			{
 				if (HitTest(pixelX, pixelY, m_PianoKeys[i]) == 1)
 				{
+					m_nLastKeyClick = i;
 					PianoKeyPress(i);
 					break;
 				}
@@ -255,6 +273,7 @@ namespace gui {
 					{
 						if (HitTest(pixelX, pixelY, m_PianoKeys[j]) == 1)
 						{
+							m_nLastKeyClick = j;
 							PianoKeyPress(j);
 							break;
 						}
@@ -268,6 +287,15 @@ namespace gui {
 	void SynthesizerWindow::OnLButtonUp()
 	{
 		m_AudioSynthesizer.setWaveAmplitude(0.0);
+		m_bIsKeyPressed[m_nLastKeyClick] = false;
+		OnPaint();
+	}
+
+	void SynthesizerWindow::KeyReleasedUp(int key)
+	{
+		m_AudioSynthesizer.setWaveAmplitude(0.0);
+		m_bIsKeyPressed[key] = false;
+		OnPaint();
 	}
 
 	bool SynthesizerWindow::HitTest(float x, float y, D2D1_ROUNDED_RECT key)
@@ -298,6 +326,8 @@ namespace gui {
 
 	void SynthesizerWindow::PianoKeyPress(int key)
 	{		
+		m_bIsKeyPressed[key] = true;
+		OnPaint();
 		m_AudioSynthesizer.setWaveAmplitude(1.0);		
 		m_AudioSynthesizer.setWaveFrequency(261.63 * pow(pow(2.0, 1.0 /12.0), key));
 	}
