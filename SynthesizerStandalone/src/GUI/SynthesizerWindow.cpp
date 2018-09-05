@@ -6,10 +6,11 @@ namespace gui {
 	SynthesizerWindow::SynthesizerWindow()
 		: pFactory(NULL), pRenderTarget(NULL), p_GradiantBrush(NULL)
 	{
-		for (int i = 0; i < m_PianoKeys.size(); ++i)
+		for (unsigned int i = 0; i < m_PianoKeys.size(); ++i)
 		{
 			if (IsKeyWhite(i)) m_NumofWhiteKeys += 1.0f;
 		}
+		m_AudioSynthesizer.setWaveType(ANALOG_SAW);
 	}
 
 	SynthesizerWindow::~SynthesizerWindow()
@@ -53,7 +54,7 @@ namespace gui {
 			return 0;
 
 		case WM_KEYDOWN:			
-			for (int i = 0; i < m_KeyCodes.size(); ++i)
+			for (unsigned int i = 0; i < m_KeyCodes.size(); ++i)
 			{
 				if (m_KeyCodes[i] == wParam)
 					PianoKeyPress(i);
@@ -61,7 +62,7 @@ namespace gui {
 			return 0;
 
 		case WM_KEYUP:
-			for (int i = 0; i < m_KeyCodes.size(); ++i)
+			for (unsigned int i = 0; i < m_KeyCodes.size(); ++i)
 			{
 				if (m_KeyCodes[i] == wParam)
 					KeyReleasedUp(i);					
@@ -115,7 +116,7 @@ namespace gui {
 
 			pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black)); // Fills entire render target with a solid color.
 
-			for (int i = 0; i < m_PianoKeys.size(); ++i) // White Key Outline.
+			for (unsigned int i = 0; i < m_PianoKeys.size(); ++i) // White Key Outline.
 			{			
 				m_GradientStops[0].color = D2D1::ColorF(D2D1::ColorF::DimGray, 1);
 				m_GradientStops[1].color = D2D1::ColorF(D2D1::ColorF::LightGray, 1);
@@ -128,7 +129,7 @@ namespace gui {
 					SafeRelease(&p_GradiantBrush);
 				}
 			}
-			for (int i = 0; i < m_PianoKeys.size(); ++i) // White Key Fill.
+			for (unsigned int i = 0; i < m_PianoKeys.size(); ++i) // White Key Fill.
 			{
 				if (IsKeyWhite(i))
 				{
@@ -150,7 +151,7 @@ namespace gui {
 					SafeRelease(&p_GradiantBrush);					
 				}
 			}
-			for (int i = 0; i < m_PianoKeys.size(); ++i) // Black Key Outline.
+			for (unsigned int i = 0; i < m_PianoKeys.size(); ++i) // Black Key Outline.
 			{
 				m_GradientStops[0].color = D2D1::ColorF(D2D1::ColorF::DimGray, 1);
 				m_GradientStops[1].color = D2D1::ColorF(D2D1::ColorF::Gray, 1);
@@ -163,7 +164,7 @@ namespace gui {
 					SafeRelease(&p_GradiantBrush);
 				}
 			}
-			for (int i = 0; i < m_PianoKeys.size(); ++i) // Black Key Fill.
+			for (unsigned int i = 0; i < m_PianoKeys.size(); ++i) // Black Key Fill.
 			{
 				if (!IsKeyWhite(i))
 				{
@@ -216,7 +217,7 @@ namespace gui {
 			D2D1_SIZE_F size = pRenderTarget->GetSize(); // Returns size of render target in DPIs.
 				
 			int j = 0;
-			for (int i = 0; i < m_PianoKeys.size(); ++i)
+			for (unsigned int i = 0; i < m_PianoKeys.size(); ++i)
 			{
 				if (IsKeyWhite(i)) // White Keys
 				{
@@ -229,14 +230,14 @@ namespace gui {
 				}
 			}
 			j = 0;
-			for (int i = 0; i < m_PianoKeys.size(); ++i) 
+			for (unsigned int i = 0; i < m_PianoKeys.size(); ++i)
 			{
 				if (!IsKeyWhite(i)) // Black Keys
 				{
-					m_PianoKeys[i] = D2D1::RoundedRect(D2D1::RectF((	size.width / m_NumofWhiteKeys * j + size.width / (m_NumofWhiteKeys * 5.5)) + (size.width / m_NumofWhiteKeys) / 2,
+					m_PianoKeys[i] = D2D1::RoundedRect(D2D1::RectF((	size.width / m_NumofWhiteKeys * j + size.width / (m_NumofWhiteKeys * 5.5f)) + (size.width / m_NumofWhiteKeys) / 2.0f,
 																		size.height / 200.0f,
-																		(size.width / m_NumofWhiteKeys * (j + 1) - size.width / (m_NumofWhiteKeys * 5.5)) + (size.width / m_NumofWhiteKeys) / 2,
-																		(size.height - size.height / 150.0f) / 1.6),
+																		(size.width / m_NumofWhiteKeys * (j + 1) - size.width / (m_NumofWhiteKeys * 5.5f)) + (size.width / m_NumofWhiteKeys) / 2.0f,
+																		(size.height - size.height / 150.0f) / 1.6f),
 																		10.0f, 10.0f);
 					
 					if (IsBlackKeySkip(i)) j += 2;
@@ -254,7 +255,7 @@ namespace gui {
 
 	void SynthesizerWindow::OnLButtonDown(int pixelX, int pixelY)
 	{
-		for (int i = 0; i < m_PianoKeys.size(); ++i)
+		for (unsigned int i = 0; i < m_PianoKeys.size(); ++i)
 		{		
 			if (!IsKeyWhite(i)) // Black Keys
 			{
@@ -267,7 +268,7 @@ namespace gui {
 			}
 			if ((i + 1) == m_PianoKeys.size())
 			{
-				for (int j = 0; j < m_PianoKeys.size(); ++j)
+				for (unsigned int j = 0; j < m_PianoKeys.size(); ++j)
 				{
 					if (IsKeyWhite(j)) // White Keys
 					{
@@ -298,7 +299,7 @@ namespace gui {
 		OnPaint();
 	}
 
-	bool SynthesizerWindow::HitTest(float x, float y, D2D1_ROUNDED_RECT key)
+	bool SynthesizerWindow::HitTest(int x, int y, D2D1_ROUNDED_RECT key)
 	{		
 		if ((x > key.rect.left) && (x < key.rect.right) && (y > key.rect.top) && (y < key.rect.bottom))
 			return true;
@@ -329,6 +330,6 @@ namespace gui {
 		m_bIsKeyPressed[key] = true;
 		OnPaint();
 		m_AudioSynthesizer.setWaveAmplitude(1.0);		
-		m_AudioSynthesizer.setWaveFrequency(261.63 * pow(pow(2.0, 1.0 /12.0), key));
+		m_AudioSynthesizer.setWaveFrequency((int)(261.63 * pow(pow(2.0, 1.0 /12.0), key)));
 	}
 }

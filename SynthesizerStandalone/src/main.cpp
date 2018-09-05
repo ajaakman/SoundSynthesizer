@@ -17,7 +17,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow)
 
 	gui::SynthesizerWindow window;
 
-	if (!window.Create(L"Audio Synthesizer", WS_OVERLAPPEDWINDOW)) // Create window with name "Synthesizer" and style Overlapped.
+	if (!window.Create(L"Audio Synthesizer by Artur Jaakman. Use Q2W3ER... Keys to Play!", WS_OVERLAPPEDWINDOW)) // Create window with name "Synthesizer" and style Overlapped.
 		return 0; // Exit if couldn't create window.
 
 	ShowWindow(window.Window(), nCmdShow);

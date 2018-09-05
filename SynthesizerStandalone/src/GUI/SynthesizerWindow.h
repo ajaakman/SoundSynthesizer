@@ -44,7 +44,7 @@ namespace gui {
 		void    DiscardGraphicsResources(); // If device is lost.
 		void    OnLButtonDown(int pixelX, int pixelY);
 		void    OnLButtonUp();
-		bool	HitTest(float x, float y , D2D1_ROUNDED_RECT key); // Check to see which key the user clicked.
+		bool	HitTest(int x, int y , D2D1_ROUNDED_RECT key); // Check to see which key the user clicked.
 		bool	IsKeyWhite(int key);
 		bool	IsBlackKeySkip(int key);
 		void    PianoKeyPress(int key);

@@ -4,14 +4,9 @@
 
 #include <Windows.h> // Using this to get audio devices. Includes waveOut API.
 
-//#include <atomic> // Protects the data that can be accessed by multiple threads at the same time.
-//#include <mutex>
-#include<memory>
-
-#include <boost/atomic.hpp>
-#include <boost/thread.hpp>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/condition_variable.hpp>
+#include <atomic> // Protects the data that can be accessed by multiple threads at the same time.
+#include <mutex>
+#include <memory>
 
 #include "AudioWaveform.h"
 
@@ -42,16 +37,16 @@ namespace audio
 		static const int s_iBLOCK_SIZE = 512; // size of blocks in the m_arrAudioBuffer.
 		static const int s_iBLOCK_COUNT = 8; // number of blocks in the m_arrAudioBuffer.
 
-		boost::atomic<int> m_iBlocksReady = s_iBLOCK_COUNT; // The number of blocks that need to be filled with audio data in the playAudio() function. Decrements when we fill it. Increments when the API signals us that a new block is ready to use through the waveOutProc() callback function. Atomic since the callback thread can access it.
+		std::atomic<int> m_iBlocksReady = s_iBLOCK_COUNT; // The number of blocks that need to be filled with audio data in the playAudio() function. Decrements when we fill it. Increments when the API signals us that a new block is ready to use through the waveOutProc() callback function. Atomic since the callback thread can access it.
 
-		boost::atomic<bool> m_bIsAlive = true; // This will stop our infinate loop when the object is destroyed.
+		std::atomic<bool> m_bIsAlive = true; // This will stop our infinate loop when the object is destroyed.
 		// Using a unique_ptr ensures that the memory is released when the object is destoryed.
 		std::unique_ptr<short[]> m_arrAudioBuffer = std::make_unique<short[]>(s_iBLOCK_COUNT * s_iBLOCK_SIZE); // Setting type to short which is 2 bytes will give us (2 * 8 = 16) bit audio, int for 32 bit audio. Can also do char for 8 bit... DON'T.
 		const int m_iBUFFER_TYPE_SIZE = sizeof(m_arrAudioBuffer[0]); // This needs to match the type size of the m_arrAudioBuffer[] array forthe right Bit Depth.
 
-		boost::condition_variable m_cvBlockIsAvailable; // Pauses thread and unpauses it from another thread. Can only be used with mutex.	
+		std::condition_variable m_cvBlockIsAvailable; // Pauses thread and unpauses it from another thread. Can only be used with mutex.	
 
-		boost::thread synthesizerThread; // The audio will be playing in the background on a new thread.
+		std::thread synthesizerThread; // The audio will be playing in the background on a new thread.
 
 		HWAVEOUT audioDevice; // Passed into the waveOutOpen() function to set our audio device.
 		WAVEHDR waveBlockHeader[s_iBLOCK_COUNT]; // The WAVEHDR structure defines the header used to identify a waveform-audio buffer.

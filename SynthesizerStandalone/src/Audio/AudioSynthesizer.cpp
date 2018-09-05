@@ -5,7 +5,7 @@ namespace audio
 	AudioSynthesizer::AudioSynthesizer() // Class takes audio function as parameter. Sine wave playing at 440Hz is played by default.
 	{
 		setupAudioSynthesizer();
-		synthesizerThread = boost::thread(&AudioSynthesizer::playAudio, this); // Starting our audio synthesis loop on a new thread. Passing audioFunction() as parameter.	
+		synthesizerThread = std::thread(&AudioSynthesizer::playAudio, this); // Starting our audio synthesis loop on a new thread. Passing audioFunction() as parameter.	
 	}
 
 	AudioSynthesizer::~AudioSynthesizer()
@@ -30,10 +30,10 @@ namespace audio
 	void AudioSynthesizer::playAudio() // The looping function that fills and sends our audio data to the audio device.
 	{
 		int i_CurrentBlock = 0; // Tracks the currently handled block in the playAudio() function.
-		boost::atomic<double> dbSampleTime = 0.0; // Based on sample frequency. When filling a block this is used with our supplied audio function.
+		std::atomic<double> dbSampleTime = 0.0; // Based on sample frequency. When filling a block this is used with our supplied audio function.
 
-		boost::mutex mutex; // Creating a mutex object to give us the ability to pause this thread later.
-		boost::unique_lock<boost::mutex> lock(mutex); // Unique lock object manages a mutex object. 		
+		std::mutex mutex; // Creating a mutex object to give us the ability to pause this thread later.
+		std::unique_lock<std::mutex> lock(mutex); // Unique lock object manages a mutex object. 		
 
 		while (m_bIsAlive == true) // Loop that keeps the audio playing until destructor is called.
 		{
@@ -42,7 +42,7 @@ namespace audio
 
 			for (int i = 0; i < s_iBLOCK_SIZE; ++i) // Loop through all the samples in the block and fill the audio buffer with data.
 			{
-				m_arrAudioBuffer[(i_CurrentBlock * s_iBLOCK_SIZE) + i] = m_dbVOLUME_MULTIPLIER * waveformFunction(dbSampleTime) * pow(2, (m_iBUFFER_TYPE_SIZE * 8) - 1); // Iterating through each sample in the i_CurrentBlock = (Volume multiplier to protect us) * (Our audio function * time) * (Scaling our function from (-1 to 1) to correct Bit Depth). waveformFunction() gets inherited from the AudioWavefrom class.
+				m_arrAudioBuffer[(i_CurrentBlock * s_iBLOCK_SIZE) + i] = (short)(m_dbVOLUME_MULTIPLIER * waveformFunction(dbSampleTime) * pow(2, (m_iBUFFER_TYPE_SIZE * 8) - 1)); // Iterating through each sample in the i_CurrentBlock = (Volume multiplier to protect us) * (Our audio function * time) * (Scaling our function from (-1 to 1) to correct Bit Depth). waveformFunction() gets inherited from the AudioWavefrom class.
 				dbSampleTime = dbSampleTime + (1.0 / s_iSAMPLE_FREQUENCY); // Incrementing our dbSampleTime by time step.
 			}
 
