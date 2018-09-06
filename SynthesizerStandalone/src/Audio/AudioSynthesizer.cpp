@@ -2,7 +2,7 @@
 
 namespace audio
 {
-	AudioSynthesizer::AudioSynthesizer() // Class takes audio function as parameter. Sine wave playing at 440Hz is played by default.
+	AudioSynthesizer::AudioSynthesizer()// Class takes audio function as parameter. Sine wave playing at 440Hz is played by default.
 	{
 		InitSynthesizer();
 		synthesizerThread = std::thread(&AudioSynthesizer::PlayAudio, this); // Starting our audio synthesis loop on a new thread. Passing audioFunction() as parameter.	

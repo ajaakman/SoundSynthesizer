@@ -2,13 +2,13 @@
 #define UNICODE
 #endif 
 
-#define CONSOLE 1
+#define ENABLE_CONSOLE 1
 
 #include "SynthesizerWindow.h" // Using Win SDK Version 10.0.17134.0
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow)
 {
-#if CONSOLE
+#if ENABLE_CONSOLE
 	AllocConsole();
 	freopen("conin$", "r", stdin);
 	freopen("conout$", "w", stdout);

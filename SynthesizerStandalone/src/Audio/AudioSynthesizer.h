@@ -10,6 +10,10 @@
 
 #include "AudioWaveform.h"
 
+#define SAMPLE_RATE 44100
+#define BLOCK_SIZE 512
+#define BLOCK_COUNT 8
+
 #define BIT_DEPTH_8 char
 #define BIT_DEPTH_16 short
 #define BIT_DEPTH_32 int
@@ -34,16 +38,15 @@ namespace audio
 
 		void PlayAudio(); // The looping function that fills and sends our audio data to the audio device.	
 
-		void InitSynthesizer(); // Sets up our audio format, links the buffer memory with the audio device and opens a new device using the supplied format.
+		void InitSynthesizer() ; // Sets up our audio format, links the buffer memory with the audio device and opens a new device using the supplied format.
 		
-		inline double GetSampleTime() const override { return m_dSampleTime; }
 
 	private:
 
 		const double m_dVolumeMultiplier = 0.1f; // Set volume multiplier to low value so you don't blow out your speakers.
-		static const int s_nSampleFrequency = 44100; // Used with dbSampleTime to determine the frequency of sampling our audio function.
-		static const int s_nBlockSize = 512; // size of blocks in the m_arrAudioBuffer.
-		static const int s_nBlockCount = 8; // number of blocks in the m_arrAudioBuffer.
+		static const int s_nSampleFrequency = SAMPLE_RATE; // Used with dbSampleTime to determine the frequency of sampling our audio function.
+		static const int s_nBlockSize = BLOCK_SIZE; // size of blocks in the m_arrAudioBuffer.
+		static const int s_nBlockCount = BLOCK_COUNT; // number of blocks in the m_arrAudioBuffer.
 
 		std::atomic<int> m_nBlocksReady = s_nBlockCount; // The number of blocks that need to be filled with audio data in the PlayAudio() function. Decrements when we fill it. Increments when the API signals us that a new block is ready to use through the WaveOutProc() callback function. Atomic since the callback thread can access it.
 
@@ -53,12 +56,13 @@ namespace audio
 		const int m_iBUFFER_TYPE_SIZE = sizeof(m_arrAudioBuffer[0]); // This needs to match the type size of the m_arrAudioBuffer[] array forthe right Bit Depth.
 
 		std::condition_variable m_cvBlockIsAvailable; // Pauses thread and unpauses it from another thread. Can only be used with mutex.
-		std::atomic<double> m_dSampleTime = 0.0; // Based on sample frequency. When filling a block this is used with our supplied audio function.
+		double m_dSampleTime = 0.0; // Based on sample frequency. When filling a block this is used with our supplied audio function.
 
 		std::thread synthesizerThread; // The audio will be playing in the background on a new thread.
 
 		HWAVEOUT audioDevice; // Passed into the waveOutOpen() function to set our audio device.
 		WAVEHDR waveBlockHeader[s_nBlockCount]; // The WAVEHDR structure defines the header used to identify a waveform-audio buffer.
 
+		inline const double& GetSampleTime() const override { return m_dSampleTime; }
 	};
 }

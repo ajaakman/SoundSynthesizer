@@ -11,14 +11,20 @@ namespace gui {
 			if (IsKeyWhite(i)) m_fNumofWhiteKeys += 1.0f;
 		}
 
-		m_AudioSynthesizer.OSC1.SetWaveType(ANALOG_SAW, 30);
+		m_AudioSynthesizer.OSC1.SetWaveType(SQUARE_WAVE, 50);
 		m_AudioSynthesizer.OSC1.SetWaveAmplitude(1.0);
+		m_AudioSynthesizer.OSC1.SetVibratoAmplitude(0.002);
+		m_AudioSynthesizer.OSC1.SetVibratoFrequency(5.0);
 
-		m_AudioSynthesizer.OSC2.SetWaveType(SAW_WAVE);
+		m_AudioSynthesizer.OSC2.SetWaveType(ANALOG_SAW, 50);
 		m_AudioSynthesizer.OSC2.SetWaveAmplitude(0.6);
+		m_AudioSynthesizer.OSC2.SetVibratoAmplitude(0.002);
+		m_AudioSynthesizer.OSC2.SetVibratoFrequency(5.0);
 
 		m_AudioSynthesizer.OSC3.SetWaveType(SAW_WAVE);
-		m_AudioSynthesizer.OSC3.SetWaveAmplitude(0.2);
+		m_AudioSynthesizer.OSC3.SetWaveAmplitude(0.4);
+		m_AudioSynthesizer.OSC3.SetVibratoAmplitude(0.002);
+		m_AudioSynthesizer.OSC3.SetVibratoFrequency(5.0);
 
 	}
 
@@ -219,7 +225,7 @@ namespace gui {
 		}
 	}
 
-	void SynthesizerWindow::CalculateLayout() 
+	void SynthesizerWindow::CalculateLayout()
 	{
 		if (m_pRenderTarget != NULL)
 		{
@@ -262,7 +268,7 @@ namespace gui {
 		SafeRelease(&m_pGradiantBrush);
 	}
 
-	void SynthesizerWindow::OnLButtonDown(int pixelX, int pixelY)
+	void SynthesizerWindow::OnLButtonDown(const int& pixelX, const int& pixelY)
 	{
 		for (unsigned int i = 0; i < m_PianoKeys.size(); ++i)
 		{		
@@ -294,7 +300,7 @@ namespace gui {
 
 	}
 
-	bool SynthesizerWindow::HitTest(int x, int y, D2D1_ROUNDED_RECT key)
+	bool SynthesizerWindow::HitTest(const int& x, const int& y, const D2D1_ROUNDED_RECT& key)
 	{		
 		if ((x > key.rect.left) && (x < key.rect.right) && (y > key.rect.top) && (y < key.rect.bottom))
 			return true;
@@ -326,13 +332,13 @@ namespace gui {
 		PianoKeyRelease(m_nLastKeyClick);
 	}
 
-	void SynthesizerWindow::KeyReleasedUp(int key)
+	void SynthesizerWindow::KeyReleasedUp(const int& key)
 	{
 		m_bIsKeyPressed[key] = false;
 		PianoKeyRelease(key);
 	}
 
-	void SynthesizerWindow::PianoKeyPress(int key)
+	void SynthesizerWindow::PianoKeyPress(const int& key)
 	{		
 		if (!m_bIsKeyPressed[key])
 		{
@@ -347,7 +353,7 @@ namespace gui {
 		}
 	}
 
-	void SynthesizerWindow::PianoKeyRelease(int key)
+	void SynthesizerWindow::PianoKeyRelease(const int& key)
 	{		
 		m_AudioSynthesizer.NoteReleased();
 		OnPaint();
