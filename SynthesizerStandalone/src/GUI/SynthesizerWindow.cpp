@@ -268,13 +268,13 @@ namespace gui {
 		SafeRelease(&m_pGradiantBrush);
 	}
 
-	void SynthesizerWindow::OnLButtonDown(const int& pixelX, const int& pixelY)
+	void SynthesizerWindow::OnLButtonDown(const int& nPixelX, const int& nPixelY)
 	{
 		for (unsigned int i = 0; i < m_PianoKeys.size(); ++i)
 		{		
 			if (!IsKeyWhite(i)) // Black Keys
 			{
-				if (HitTest(pixelX, pixelY, m_PianoKeys[i]) == 1)
+				if (HitTest(nPixelX, nPixelY, m_PianoKeys[i]) == 1)
 				{
 					m_nLastKeyClick = i;
 					PianoKeyPress(i);
@@ -287,7 +287,7 @@ namespace gui {
 				{
 					if (IsKeyWhite(j)) // White Keys
 					{
-						if (HitTest(pixelX, pixelY, m_PianoKeys[j]) == 1)
+						if (HitTest(nPixelX, nPixelY, m_PianoKeys[j]) == 1)
 						{
 							m_nLastKeyClick = j;
 							PianoKeyPress(j);
@@ -300,27 +300,27 @@ namespace gui {
 
 	}
 
-	bool SynthesizerWindow::HitTest(const int& x, const int& y, const D2D1_ROUNDED_RECT& key)
+	bool SynthesizerWindow::HitTest(const int& nX, const int& nY, const D2D1_ROUNDED_RECT& key)
 	{		
-		if ((x > key.rect.left) && (x < key.rect.right) && (y > key.rect.top) && (y < key.rect.bottom))
+		if ((nX > key.rect.left) && (nX < key.rect.right) && (nY > key.rect.top) && (nY < key.rect.bottom))
 			return true;
 		else
 			return false;
 	}
 
-	bool SynthesizerWindow::IsKeyWhite(int key)
+	bool SynthesizerWindow::IsKeyWhite(int nKey)
 	{
-		key %= 12;
-		if (key == 0 || key == 2 || key == 4 || key == 5 || key == 7 || key == 9 || key == 11)
+		nKey %= 12;
+		if (nKey == 0 || nKey == 2 || nKey == 4 || nKey == 5 || nKey == 7 || nKey == 9 || nKey == 11)
 			return true;
 		else
 			return false;
 	}
 
-	bool SynthesizerWindow::IsBlackKeySkip(int key)
+	bool SynthesizerWindow::IsBlackKeySkip(int nKey)
 	{
-		key %= 12;
-		if (key == 3 || key == 10)
+		nKey %= 12;
+		if (nKey == 3 || nKey == 10)
 			return true;
 		else
 			return false;
@@ -332,30 +332,30 @@ namespace gui {
 		PianoKeyRelease(m_nLastKeyClick);
 	}
 
-	void SynthesizerWindow::KeyReleasedUp(const int& key)
+	void SynthesizerWindow::KeyReleasedUp(const int& nKey)
 	{
-		m_bIsKeyPressed[key] = false;
-		PianoKeyRelease(key);
+		m_bIsKeyPressed[nKey] = false;
+		PianoKeyRelease(nKey);
 	}
 
-	void SynthesizerWindow::PianoKeyPress(const int& key)
+	void SynthesizerWindow::PianoKeyPress(const int& nKey)
 	{		
-		if (!m_bIsKeyPressed[key])
+		if (!m_bIsKeyPressed[nKey])
 		{
-			std::cout << key << std::endl;
-			m_bIsKeyPressed[key] = true;
+			std::cout << nKey << std::endl;
+			m_bIsKeyPressed[nKey] = true;
 			m_AudioSynthesizer.SetWaveAmplitude(1.0);
-			m_AudioSynthesizer.OSC1.SetWaveFrequency((261.63 / 4.0 - 0.2) * pow(pow(2.0, 1.0 / 12.0), key));
-			m_AudioSynthesizer.OSC2.SetWaveFrequency((261.63 / 2.0 + 0.2) * pow(pow(2.0, 1.0 / 12.0), key));
-			m_AudioSynthesizer.OSC3.SetWaveFrequency((261.63 / 4.0 * 1.5) * pow(pow(2.0, 1.0 / 12.0), key));
-			m_AudioSynthesizer.NoteTriggered();
+			m_AudioSynthesizer.OSC1.SetWaveFrequency((261.63 / 4.0 - 0.2) * pow(pow(2.0, 1.0 / 12.0), nKey));
+			m_AudioSynthesizer.OSC2.SetWaveFrequency((261.63 / 2.0 + 0.2) * pow(pow(2.0, 1.0 / 12.0), nKey));
+			m_AudioSynthesizer.OSC3.SetWaveFrequency((261.63 / 4.0 * 1.5) * pow(pow(2.0, 1.0 / 12.0), nKey));
+			m_AudioSynthesizer.NoteTriggered(nKey);
 			OnPaint();
 		}
 	}
 
-	void SynthesizerWindow::PianoKeyRelease(const int& key)
+	void SynthesizerWindow::PianoKeyRelease(const int& nKey)
 	{		
-		m_AudioSynthesizer.NoteReleased();
+		m_AudioSynthesizer.NoteReleased(nKey);
 		OnPaint();
 	}
 }

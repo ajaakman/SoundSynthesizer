@@ -172,13 +172,13 @@ namespace audio
 		return m_dWaveAmplitude * (Envelope() * (OSC1.AudioFunction(*this) + OSC2.AudioFunction(*this) + OSC3.AudioFunction(*this)));
 	}
 		
-	void AudioWaveform::NoteTriggered()
+	void AudioWaveform::NoteTriggered(const int& key)
 	{
 		m_dTriggerOnTime = GetSampleTime();
 		m_bNoteOn = true;
 	}
 
-	void AudioWaveform::NoteReleased()
+	void AudioWaveform::NoteReleased(const int& key)
 	{
 		m_dTriggerOffTime = GetSampleTime();
 		m_bNoteOn = false;

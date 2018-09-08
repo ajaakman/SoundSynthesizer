@@ -41,14 +41,14 @@ namespace gui {
 		void    Resize();
 		void    CalculateLayout(); 
 		void    DiscardGraphicsResources(); // If device is lost.
-		void    OnLButtonDown(const int& pixelX, const int& pixelY);
+		void    OnLButtonDown(const int& nPixelX, const int& nPixelY);
 		void    OnLButtonUp();
-		bool	HitTest(const int& x, const int& y, const D2D1_ROUNDED_RECT& key); // Check to see which key the user clicked.
-		bool	IsKeyWhite(int key);
-		bool	IsBlackKeySkip(int key);
-		void    PianoKeyPress(const int& key);
-		void    PianoKeyRelease(const int& key);
-		void	KeyReleasedUp(const int& key);
+		bool	HitTest(const int& nX, const int& nY, const D2D1_ROUNDED_RECT& key); // Check to see which key the user clicked.
+		bool	IsKeyWhite(int nKey);
+		bool	IsBlackKeySkip(int nKey);
+		void    PianoKeyPress(const int& nKey);
+		void    PianoKeyRelease(const int& nKey);
+		void	KeyReleasedUp(const int& nKey);
 	};
 
 	template <class T> void SafeRelease(T **ppT) // Used to safely release resources when device is lost or window is closed.

@@ -76,8 +76,8 @@ namespace audio
 		// Amplitude multiplier. Range double 0.0 - 1.0.
 		void SetWaveAmplitude(const double& dNewAmplitude);		
 		
-		void NoteTriggered();
-		void NoteReleased();
+		void NoteTriggered(const int& key);
+		void NoteReleased(const int& key);
 
 	protected:
 
