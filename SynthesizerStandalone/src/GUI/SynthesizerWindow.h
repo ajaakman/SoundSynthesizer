@@ -29,7 +29,7 @@ namespace gui {
 		std::array<D2D1_ROUNDED_RECT, NUM_OF_KEYS>	 m_PianoKeys;
 		std::array<bool, NUM_OF_KEYS>				 m_bIsKeyPressed;
 		audio::AudioSynthesizer						 m_AudioSynthesizer;
-		std::array<int, 20>							 m_nKeyCodes{ 81, 50, 87, 51, 69, 82, 53, 84, 54, 89, 55, 85, 73, 57, 79, 48, 80, 219, 187, 221 };
+		std::array<int, 21>							 m_nKeyCodes{ 81, 50, 87, 51, 69, 82, 53, 84, 54, 89, 55, 85, 73, 57, 79, 48, 80, 219, 187, 221, 8 };
 		int											 m_nLastKeyClick;
 		float									     m_fNumofWhiteKeys;
 

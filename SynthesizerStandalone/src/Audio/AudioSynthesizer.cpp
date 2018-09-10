@@ -1,5 +1,6 @@
 #include "AudioSynthesizer.h"
 
+#include <iostream>
 namespace audio
 {
 	AudioSynthesizer::AudioSynthesizer()// Class takes audio function as parameter. Sine wave playing at 440Hz is played by default.
@@ -36,12 +37,12 @@ namespace audio
 
 		while (m_bIsAlive == true) // Loop that keeps the audio playing until destructor is called.
 		{
-			if (m_nBlocksReady == 0) // If no blocks are left to fill, pause until the callback function gives us one to fill.
-				m_cvBlockIsAvailable.wait(lock);
+			if (m_nBlocksReady == 0) // If no blocks are left to fill, pause until the callback function gives us one to fill.			
+					m_cvBlockIsAvailable.wait(lock);			
 
 			for (int i = 0; i < s_nBlockSize; ++i) // Loop through all the samples in the block and fill the audio buffer with data.
 			{
-				m_arrAudioBuffer[(nCurrentBlock * s_nBlockSize) + i] = (BIT_DEPTH)(m_dVolumeMultiplier * WaveformFunction() * pow(2, (m_iBUFFER_TYPE_SIZE * 8) - 1)); // Iterating through each sample in the nCurrentBlock = (Volume multiplier to protect us) * (Our audio function * time) * (Scaling our function from (-1 to 1) to correct Bit Depth). WaveformFunction() gets inherited from the AudioWavefrom class.
+				m_arrAudioBuffer[(nCurrentBlock * s_nBlockSize) + i] = (BIT_DEPTH)(ClampAudio(WaveformFunction()) * pow(2, (m_iBUFFER_TYPE_SIZE * 8) - 1)); // Iterating through each sample in the nCurrentBlock = (Volume multiplier to protect us) * (Our audio function * time) * (Scaling our function from (-1 to 1) to correct Bit Depth). WaveformFunction() gets inherited from the AudioWavefrom class.
 				m_dSampleTime = m_dSampleTime + (1.0 / s_nSampleFrequency); // Incrementing our dbSampleTime by time step.
 			}
 
@@ -54,6 +55,27 @@ namespace audio
 
 		waveOutReset(audioDevice); // Before calling waveOutClose, the application must wait for all buffers to finish playing or call the waveOutReset function to terminate playback.
 		waveOutClose(audioDevice); // The close operation fails if the device is still playing a waveform-audio buffer that was previously sent by calling waveOutWrite.
+	}
+
+	double AudioSynthesizer::ClampAudio(const double& dAudio)
+	{		
+		if (dAudio > 1.0)
+		{
+			ClippingAlert();
+			return  1.0;		
+		}
+		else if (dAudio < -1.0)
+		{
+			ClippingAlert();
+			return -1.0;		
+		}
+		else
+			return dAudio;
+	}
+
+	void AudioSynthesizer::ClippingAlert()
+	{
+		std::cout << "Audio Clipping!!!" << std::endl;
 	}
 
 	void AudioSynthesizer::InitSynthesizer() // Sets up our audio format, links the buffer memory with the audio device and opens a new device using the supplied format.

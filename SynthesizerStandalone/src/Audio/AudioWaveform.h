@@ -2,6 +2,8 @@
 
 #include <math.h>
 #include <atomic>
+#include <mutex>
+#include <vector>
 
 #define SINE_WAVE 0
 #define SQUARE_WAVE 1
@@ -13,44 +15,26 @@
 namespace audio 
 {
 	class AudioWaveform // This class contains audio function used by the AudioSynthesizer class.
-	{
-	private:
-
-		std::atomic<double> m_dWaveAmplitude;
-
-		std::atomic<double> m_dAttackTime;
-		std::atomic<double> m_dDecayTime;
-		std::atomic<double> m_dReleaseTime;
-
-		std::atomic<double> m_dSustainAmp;
-		std::atomic<double> m_dStartAmp;
-
-		std::atomic<double> m_dTriggerOnTime;
-		std::atomic<double> m_dTriggerOffTime;
-
-		std::atomic<bool> m_bNoteOn = false;
+	{	
 
 	public:
-
 		struct Oscillator
-		{			
+		{
 		private:
 			std::atomic<double> m_dWaveAmplitude;
 			std::atomic<double> m_dWaveFrequency;
 			std::atomic<unsigned int> m_nWaveType;
-			std::atomic<unsigned int> m_nSawParts;	
+			std::atomic<unsigned int> m_nSawParts;
 
 			std::atomic<double> m_dVibratoFreq;
 			std::atomic<double> m_dVibratoAmplitude;
 
 			std::atomic<double> m_dTremoloFreq;
 			std::atomic<double> m_dTremoloAmplitude;
-
 		public:
 			Oscillator();
 			// Passed to the Synthesizer
-			double AudioFunction(const AudioWaveform& wf);
-			
+			double AudioFunction(const double dTime, const double dHertz);
 			// Oscillator frequency. Range int 1 - 20000.
 			void SetWaveFrequency(const double& dNewFrequency);
 			// Oscillator amplitude. Range double 0.0 - 1.0.
@@ -66,18 +50,55 @@ namespace audio
 
 			void SetTremoloAmplitude(const double& dNewAmplitude);
 		};
-	
-		Oscillator OSC1;
-		Oscillator OSC2;
-		Oscillator OSC3;
+
+		struct Note
+		{
+		public:
+			int m_nNoteID;
+			double m_dNoteOnTime;
+			double m_dNoteOffTime;
+			bool m_bIsNoteActive;
+
+			Note();
+		};
+
+		struct Envelope
+		{
+		private:
+			std::atomic<double> m_dAttackTime;
+			std::atomic<double> m_dDecayTime;
+			std::atomic<double> m_dSustainAmp;
+
+			std::atomic<double> m_dReleaseTime;
+			std::atomic<double> m_dStartAmp;
+
+		public:
+
+			Envelope();
+
+			double ADSREnvelope(const AudioWaveform& wf, const double& dTimeOn, const double& dTimeOff);
+
+		};
+
+	private:
+		// Using a mutex lock anywhere where we're writing to the m_Notes Struct members;
+		std::mutex mutex;
+		
+		std::vector<Note> m_Notes;
+
+		std::atomic<double> m_dMasterVolume;
 
 	public:
 		
+		Envelope ADSR;
+		Oscillator OSC1;
+		Oscillator OSC2;
+		Oscillator OSC3;
 		// Amplitude multiplier. Range double 0.0 - 1.0.
-		void SetWaveAmplitude(const double& dNewAmplitude);		
+		void SetMasterVolume(const double& dNewAmplitude);
 		
-		void NoteTriggered(const int& key);
-		void NoteReleased(const int& key);
+		void NoteTriggered(const int& nKey);
+		void NoteReleased(const int& nKey);
 
 	protected:
 
@@ -87,7 +108,7 @@ namespace audio
 
 	private: 
 
-		double Envelope();
+		static double Scale(const int& nNoteID);
 
 		virtual const double& GetSampleTime() const = 0;
 

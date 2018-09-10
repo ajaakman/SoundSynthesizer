@@ -40,10 +40,12 @@ namespace audio
 
 		void InitSynthesizer() ; // Sets up our audio format, links the buffer memory with the audio device and opens a new device using the supplied format.
 		
+		double ClampAudio(const double& dAudio);
+
+		void ClippingAlert();
 
 	private:
 
-		const double m_dVolumeMultiplier = 0.1f; // Set volume multiplier to low value so you don't blow out your speakers.
 		static const int s_nSampleFrequency = SAMPLE_RATE; // Used with dbSampleTime to determine the frequency of sampling our audio function.
 		static const int s_nBlockSize = BLOCK_SIZE; // size of blocks in the m_arrAudioBuffer.
 		static const int s_nBlockCount = BLOCK_COUNT; // number of blocks in the m_arrAudioBuffer.

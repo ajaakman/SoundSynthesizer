@@ -11,19 +11,21 @@ namespace gui {
 			if (IsKeyWhite(i)) m_fNumofWhiteKeys += 1.0f;
 		}
 
+		m_AudioSynthesizer.SetMasterVolume(0.02);
+
 		m_AudioSynthesizer.OSC1.SetWaveType(SQUARE_WAVE, 50);
-		m_AudioSynthesizer.OSC1.SetWaveAmplitude(1.0);
-		m_AudioSynthesizer.OSC1.SetVibratoAmplitude(0.002);
+		m_AudioSynthesizer.OSC1.SetWaveAmplitude(0.1);
+		m_AudioSynthesizer.OSC1.SetVibratoAmplitude(0.003);
 		m_AudioSynthesizer.OSC1.SetVibratoFrequency(5.0);
 
-		m_AudioSynthesizer.OSC2.SetWaveType(ANALOG_SAW, 50);
-		m_AudioSynthesizer.OSC2.SetWaveAmplitude(0.6);
-		m_AudioSynthesizer.OSC2.SetVibratoAmplitude(0.002);
+		m_AudioSynthesizer.OSC2.SetWaveType(SQUARE_WAVE);
+		m_AudioSynthesizer.OSC2.SetWaveAmplitude(0.8);
+		m_AudioSynthesizer.OSC2.SetVibratoAmplitude(0.003);
 		m_AudioSynthesizer.OSC2.SetVibratoFrequency(5.0);
 
-		m_AudioSynthesizer.OSC3.SetWaveType(SAW_WAVE);
-		m_AudioSynthesizer.OSC3.SetWaveAmplitude(0.4);
-		m_AudioSynthesizer.OSC3.SetVibratoAmplitude(0.002);
+		m_AudioSynthesizer.OSC3.SetWaveType(SQUARE_WAVE);
+		m_AudioSynthesizer.OSC3.SetWaveAmplitude(0.7);
+		m_AudioSynthesizer.OSC3.SetVibratoAmplitude(0.003);
 		m_AudioSynthesizer.OSC3.SetVibratoFrequency(5.0);
 
 	}
@@ -342,12 +344,7 @@ namespace gui {
 	{		
 		if (!m_bIsKeyPressed[nKey])
 		{
-			std::cout << nKey << std::endl;
 			m_bIsKeyPressed[nKey] = true;
-			m_AudioSynthesizer.SetWaveAmplitude(1.0);
-			m_AudioSynthesizer.OSC1.SetWaveFrequency((261.63 / 4.0 - 0.2) * pow(pow(2.0, 1.0 / 12.0), nKey));
-			m_AudioSynthesizer.OSC2.SetWaveFrequency((261.63 / 2.0 + 0.2) * pow(pow(2.0, 1.0 / 12.0), nKey));
-			m_AudioSynthesizer.OSC3.SetWaveFrequency((261.63 / 4.0 * 1.5) * pow(pow(2.0, 1.0 / 12.0), nKey));
 			m_AudioSynthesizer.NoteTriggered(nKey);
 			OnPaint();
 		}
