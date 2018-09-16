@@ -339,6 +339,11 @@ namespace gui {
 		PianoKeyRelease(nKey);
 	}
 
+	void SynthesizerWindow::SetMasterVolume(const double & dNewVolume)
+	{
+		m_AudioSynthesizer.SetMasterVolume(dNewVolume);
+	}
+
 	void SynthesizerWindow::PianoKeyPress(const int& nKey)
 	{		
 		if (!m_bIsKeyPressed[nKey])

@@ -1,10 +1,18 @@
 #pragma once
-class TestWindow
-{
-public:
-	TestWindow();
-	~TestWindow();
-private:
-	void InitMessageLoop();
-};
 
+namespace clr
+{
+
+	class TestWindow
+	{
+	private:
+		void InitMessageLoop();
+		double mMasterVolume;
+	public:
+		TestWindow();
+		~TestWindow();
+
+		void SetMasterVolume(const double& dNewVolume);
+	};
+
+}

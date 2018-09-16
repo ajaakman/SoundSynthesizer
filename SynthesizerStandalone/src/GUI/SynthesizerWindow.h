@@ -49,6 +49,9 @@ namespace gui {
 		void    PianoKeyPress(const int& nKey);
 		void    PianoKeyRelease(const int& nKey);
 		void	KeyReleasedUp(const int& nKey);
+
+	public:
+		void	SetMasterVolume(const double& dNewVolume);
 	};
 
 	template <class T> void SafeRelease(T **ppT) // Used to safely release resources when device is lost or window is closed.

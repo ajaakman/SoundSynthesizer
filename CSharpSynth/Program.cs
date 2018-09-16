@@ -15,6 +15,8 @@ namespace CSharpSynth
             CLISynth synth = new CLISynth();
             Console.WriteLine("End");
             Console.ReadLine();
+            synth.SetMasterVolume(0.02);    
+            Console.ReadLine();
         }
     }
 }

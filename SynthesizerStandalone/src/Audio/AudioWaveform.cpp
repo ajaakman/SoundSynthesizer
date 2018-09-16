@@ -24,7 +24,7 @@ namespace audio
 
 	double AudioWaveform::WaveformFunction()
 	{
-		std::unique_lock<std::mutex> lm(mutex);
+		//std::unique_lock<std::mutex> lm(mutex); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		double dMasterOut = 0.0;
 
 		for (auto &note : m_Notes)
