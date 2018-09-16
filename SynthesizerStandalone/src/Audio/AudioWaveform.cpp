@@ -7,11 +7,11 @@ namespace audio
 	std::mutex mutex;// Using a mutex lock anywhere where we're writing to the m_Notes Struct members;
 
 	AudioWaveform::AudioWaveform()
-		: m_dMasterVolume(0.0)
+		: m_dMasterVolume(0.02)
 	{	}
 
 	AudioWaveform::Oscillator::Oscillator()
-		: m_dWaveAmplitude(0.0), m_dWaveFrequency(444.0), m_nWaveType(0), m_nSawParts(50), m_dVibratoFreq(0.0), m_dVibratoAmplitude(0.0), m_dTremoloFreq(0.1), m_dTremoloAmplitude(0.01)
+		: m_dWaveAmplitude(0.1), m_dWaveFrequency(444.0), m_nWaveType(1), m_nSawParts(50), m_dVibratoFreq(5.0), m_dVibratoAmplitude(0.003), m_dTremoloFreq(0.1), m_dTremoloAmplitude(0.01)
 	{	}
 
 	AudioWaveform::Note::Note()
@@ -156,7 +156,6 @@ namespace audio
 			note.m_bIsNoteActive = true;
 			m_Notes.push_back(note);
 		}
-		std::cout << m_Notes.size() << std::endl;
 	}
 
 	void AudioWaveform::NoteReleased(const int& nKey)

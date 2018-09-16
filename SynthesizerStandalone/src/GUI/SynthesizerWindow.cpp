@@ -27,7 +27,6 @@ namespace gui {
 		m_AudioSynthesizer.OSC3.SetWaveAmplitude(0.7);
 		m_AudioSynthesizer.OSC3.SetVibratoAmplitude(0.003);
 		m_AudioSynthesizer.OSC3.SetVibratoFrequency(5.0);
-
 	}
 
 	SynthesizerWindow::~SynthesizerWindow()
