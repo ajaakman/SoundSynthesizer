@@ -11,9 +11,9 @@ namespace CSharpSynth
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World");
-            Console.ReadLine();
+            Console.WriteLine("Start");
             CLISynth synth = new CLISynth();
+            Console.WriteLine("End");
             Console.ReadLine();
         }
     }
