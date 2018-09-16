@@ -5,7 +5,6 @@
 #include <Windows.h> // Using this to get audio devices. Includes waveOut API.
 
 #include <atomic> // Protects the data that can be accessed by multiple threads at the same time.
-#include <mutex>
 #include <memory>
 
 #include "AudioWaveform.h"
@@ -57,11 +56,8 @@ namespace audio
 		std::unique_ptr<BIT_DEPTH[]> m_arrAudioBuffer = std::make_unique<BIT_DEPTH[]>(s_nBlockCount * s_nBlockSize); // Setting type to short which is 2 bytes will give us (2 * 8 = 16) bit audio, int for 32 bit audio. Can also do char for 8 bit... DON'T.
 		const int m_iBUFFER_TYPE_SIZE = sizeof(m_arrAudioBuffer[0]); // This needs to match the type size of the m_arrAudioBuffer[] array forthe right Bit Depth.
 
-		std::condition_variable m_cvBlockIsAvailable; // Pauses thread and unpauses it from another thread. Can only be used with mutex.
 		double m_dSampleTime = 0.0; // Based on sample frequency. When filling a block this is used with our supplied audio function.
-
-		std::thread synthesizerThread; // The audio will be playing in the background on a new thread.
-
+				
 		HWAVEOUT audioDevice; // Passed into the waveOutOpen() function to set our audio device.
 		WAVEHDR waveBlockHeader[s_nBlockCount]; // The WAVEHDR structure defines the header used to identify a waveform-audio buffer.
 

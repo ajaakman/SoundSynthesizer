@@ -1,8 +1,11 @@
 #include "AudioWaveform.h"
 #include <iostream>
+#include <mutex>
 
 namespace audio
 {		
+	std::mutex mutex;// Using a mutex lock anywhere where we're writing to the m_Notes Struct members;
+
 	AudioWaveform::AudioWaveform()
 		: m_dMasterVolume(0.0)
 	{	}

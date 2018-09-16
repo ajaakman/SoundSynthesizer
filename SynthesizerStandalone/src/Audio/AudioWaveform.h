@@ -2,7 +2,6 @@
 
 #include <math.h>
 #include <atomic>
-#include <mutex>
 #include <vector>
 
 #define SINE_WAVE 0
@@ -81,8 +80,6 @@ namespace audio
 		};
 
 	private:
-		// Using a mutex lock anywhere where we're writing to the m_Notes Struct members;
-		std::mutex mutex;
 		
 		std::vector<Note> m_Notes;
 

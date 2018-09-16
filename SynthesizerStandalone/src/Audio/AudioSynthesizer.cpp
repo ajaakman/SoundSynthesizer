@@ -1,8 +1,13 @@
 #include "AudioSynthesizer.h"
 
 #include <iostream>
+#include <mutex>
+
 namespace audio
 {
+	std::condition_variable m_cvBlockIsAvailable; // Pauses thread and unpauses it from another thread. Can only be used with mutex.
+	std::thread synthesizerThread; // The audio will be playing in the background on a new thread.
+
 	AudioSynthesizer::AudioSynthesizer()// Class takes audio function as parameter. Sine wave playing at 440Hz is played by default.
 	{
 		InitSynthesizer();
