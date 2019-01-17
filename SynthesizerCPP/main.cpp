@@ -8,8 +8,9 @@
 int main()
 {	
 	clr::TestWindow window;	
+	std::cout << "Hello" << std::endl;
 	std::cin.get();
-	window.SetMasterVolume(0.2);
+	window.SetMasterVolume(0.02);
 	std::cin.get();
 
 	return 0;

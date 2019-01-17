@@ -8,7 +8,7 @@ namespace clr
 	{
 		std::thread thread = std::thread(&TestWindow::InitMessageLoop, this);
 		thread.detach();
-		mMasterVolume = 0.1;
+		mMasterVolume = 0.02;
 	}
 
 	void TestWindow::InitMessageLoop()

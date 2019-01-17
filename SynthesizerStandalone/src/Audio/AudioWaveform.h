@@ -10,6 +10,7 @@
 #define TRIANGLE_WAVE 3
 #define ANALOG_SAW 4
 #define NOISE 5
+#define PI 3.141592653589793238463
 
 namespace audio 
 {
