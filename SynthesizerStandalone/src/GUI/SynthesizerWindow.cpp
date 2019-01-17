@@ -8,7 +8,7 @@ namespace gui {
 	{
 		for (unsigned int i = 0; i < m_PianoKeys.size(); ++i)
 		{
-			if (IsKeyWhite(i)) m_fNumofWhiteKeys += 1.0f;
+			if (IsKeyWhite(i)) m_nNumofWhiteKeys += 1;
 		}
 
 		m_AudioSynthesizer.OSC1.SetWaveType(SAW_WAVE);
@@ -16,7 +16,7 @@ namespace gui {
 		m_AudioSynthesizer.OSC1.SetVibratoAmplitude(0.003);
 		m_AudioSynthesizer.OSC1.SetVibratoFrequency(5.0);
 
-		m_AudioSynthesizer.OSC2.SetWaveType(SINE_WAVE);
+		m_AudioSynthesizer.OSC2.SetWaveType(SAW_WAVE, 50);
 		m_AudioSynthesizer.OSC2.SetWaveAmplitude(0.8);
 		m_AudioSynthesizer.OSC2.SetVibratoAmplitude(0.003);
 		m_AudioSynthesizer.OSC2.SetVibratoFrequency(5.0);
@@ -235,9 +235,9 @@ namespace gui {
 			{
 				if (IsKeyWhite(i)) // White Keys
 				{
-					m_PianoKeys[i] = D2D1::RoundedRect(D2D1::RectF( size.width / m_fNumofWhiteKeys * j + size.width / 400.0f,
+					m_PianoKeys[i] = D2D1::RoundedRect(D2D1::RectF( size.width / m_nNumofWhiteKeys * j + size.width / 400.0f,
 																	size.height / 150.0f, 
-																	size.width / m_fNumofWhiteKeys * (j + 1) - size.width / 400.0f,
+																	size.width / m_nNumofWhiteKeys * (j + 1) - size.width / 400.0f,
 																	size.height - size.height / 150.0f), 
 																	4.0f, 4.0f);
 				++j;
@@ -248,9 +248,9 @@ namespace gui {
 			{
 				if (!IsKeyWhite(i)) // Black Keys
 				{
-					m_PianoKeys[i] = D2D1::RoundedRect(D2D1::RectF((	size.width / m_fNumofWhiteKeys * j + size.width / (m_fNumofWhiteKeys * 5.5f)) + (size.width / m_fNumofWhiteKeys) / 2.0f,
+					m_PianoKeys[i] = D2D1::RoundedRect(D2D1::RectF((	size.width / m_nNumofWhiteKeys * j + size.width / (m_nNumofWhiteKeys * 5.5f)) + (size.width / m_nNumofWhiteKeys) / 2.0f,
 																		size.height / 200.0f,
-																		(size.width / m_fNumofWhiteKeys * (j + 1) - size.width / (m_fNumofWhiteKeys * 5.5f)) + (size.width / m_fNumofWhiteKeys) / 2.0f,
+																		(size.width / m_nNumofWhiteKeys * (j + 1) - size.width / (m_nNumofWhiteKeys * 5.5f)) + (size.width / m_nNumofWhiteKeys) / 2.0f,
 																		(size.height - size.height / 150.0f) / 1.6f),
 																		10.0f, 10.0f);
 					

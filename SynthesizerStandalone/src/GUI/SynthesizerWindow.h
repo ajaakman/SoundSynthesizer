@@ -30,8 +30,8 @@ namespace gui {
 		std::array<bool, NUM_OF_KEYS>				 m_bIsKeyPressed;
 		audio::AudioSynthesizer						 m_AudioSynthesizer;
 		std::array<int, 21>							 m_nKeyCodes{ 81, 50, 87, 51, 69, 82, 53, 84, 54, 89, 55, 85, 73, 57, 79, 48, 80, 219, 187, 221, 8 };
-		int											 m_nLastKeyClick;
-		float									     m_fNumofWhiteKeys;
+		unsigned int								 m_nLastKeyClick;
+		unsigned int								 m_nNumofWhiteKeys;
 
 		D2D1_GRADIENT_STOP							 m_GradientStops[2];
 		ID2D1GradientStopCollection					*m_pGradientStops = NULL;		

@@ -71,7 +71,7 @@ namespace audio
 		case TRIANGLE_WAVE:
 			return m_dWaveAmplitude * (asin(sin(dFrequency)) * 2.0 / PI);
 		case SAW_WAVE:
-			return m_dWaveAmplitude * -2 / PI * (atan(1.0 / tan(dHertz * dTime * PI)));
+			return m_dWaveAmplitude * -2 / PI * (atan(1.0 / tan(dHertz * dTime * PI + dVibrato)));
 			//return m_dWaveAmplitude * (((2.0 / PI) * ((dHertz * PI * fmod(dTime, 1.0 / dHertz)) - 1)) );
 		case ANALOG_SAW:
 		{
