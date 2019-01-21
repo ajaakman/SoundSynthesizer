@@ -12,19 +12,25 @@ namespace gui {
 		}
 
 		m_AudioSynthesizer.OSC1.SetWaveType(SAW_WAVE);
-		m_AudioSynthesizer.OSC1.SetWaveAmplitude(0.0);
+		m_AudioSynthesizer.OSC1.SetWaveAmplitude(2.0);
 		m_AudioSynthesizer.OSC1.SetVibratoAmplitude(0.003);
 		m_AudioSynthesizer.OSC1.SetVibratoFrequency(5.0);
+		m_AudioSynthesizer.OSC1.SetTremoloAmplitude(0.1);
+		m_AudioSynthesizer.OSC1.SetTremoloFrequency(5.0);
 
 		m_AudioSynthesizer.OSC2.SetWaveType(SAW_WAVE, 50);
-		m_AudioSynthesizer.OSC2.SetWaveAmplitude(0.8);
-		m_AudioSynthesizer.OSC2.SetVibratoAmplitude(0.003);
-		m_AudioSynthesizer.OSC2.SetVibratoFrequency(5.0);
+		m_AudioSynthesizer.OSC2.SetWaveAmplitude(0.5);
+		m_AudioSynthesizer.OSC2.SetVibratoAmplitude(1);
+		m_AudioSynthesizer.OSC2.SetVibratoFrequency(0.003);
+		m_AudioSynthesizer.OSC2.SetTremoloAmplitude(0.1);
+		m_AudioSynthesizer.OSC2.SetTremoloFrequency(5.0);
 
-		m_AudioSynthesizer.OSC3.SetWaveType(SAW_WAVE);
-		m_AudioSynthesizer.OSC3.SetWaveAmplitude(0.0);
+		m_AudioSynthesizer.OSC3.SetWaveType(SQUARE_WAVE);
+		m_AudioSynthesizer.OSC3.SetWaveAmplitude(3.0);
 		m_AudioSynthesizer.OSC3.SetVibratoAmplitude(0.003);
 		m_AudioSynthesizer.OSC3.SetVibratoFrequency(5.0);
+		m_AudioSynthesizer.OSC3.SetTremoloAmplitude(0.1);
+		m_AudioSynthesizer.OSC3.SetTremoloFrequency(5.0);
 	}
 
 	SynthesizerWindow::~SynthesizerWindow()

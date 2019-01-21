@@ -59,19 +59,19 @@ namespace audio
 
 	double AudioWaveform::Oscillator::AudioFunction(const double dTime, const double dHertz)
 	{
-		//double dTremolo = m_dTremoloAmplitude * dHertz * sin(m_dTremoloFreq * 2.0 * PI * dTime);
+		double dTremolo = m_dTremoloAmplitude * sin(m_dTremoloFreq * 2.0 * PI * dTime);
 		double dVibrato = m_dVibratoAmplitude * dHertz * sin(m_dVibratoFreq * 2.0 * PI * dTime);
 		double dFrequency = dHertz * 2.0 * PI * dTime + dVibrato;
 		
 		switch (m_nWaveType)
 		{
 		case SQUARE_WAVE:
-			return m_dWaveAmplitude * signbit((sin(dFrequency)));
+			return (m_dWaveAmplitude + dTremolo) * signbit((sin(dFrequency)));
 			//return  m_dWaveAmplitude * (sin(dFrequency) > 0.0 ? 1.0 : -1.0);
 		case TRIANGLE_WAVE:
-			return m_dWaveAmplitude * (asin(sin(dFrequency)) * 2.0 / PI);
+			return (m_dWaveAmplitude + dTremolo) * (asin(sin(dFrequency)) * 2.0 / PI);
 		case SAW_WAVE:
-			return m_dWaveAmplitude * -2 / PI * (atan(1.0 / tan(dHertz * dTime * PI + dVibrato)));
+			return (m_dWaveAmplitude + dTremolo) * -2 / PI * (atan(1.0 / tan(dHertz * dTime * PI + dVibrato)));
 			//return m_dWaveAmplitude * (((2.0 / PI) * ((dHertz * PI * fmod(dTime, 1.0 / dHertz)) - 1)) );
 		case ANALOG_SAW:
 		{
@@ -80,12 +80,12 @@ namespace audio
 			for (int i = 1; i < m_nSawParts; ++i)
 				dOut += (sin(i * dFrequency)) / i;
 
-			return m_dWaveAmplitude * ((dOut * (2.0 / PI)));
+			return (m_dWaveAmplitude + dTremolo) * ((dOut * (2.0 / PI)));
 		}
 		case NOISE:
-			return m_dWaveAmplitude * ((2.0 * ((double)rand() / (double)RAND_MAX) - 1.0) );
+			return (m_dWaveAmplitude + dTremolo) * ((2.0 * ((double)rand() / (double)RAND_MAX) - 1.0) );
 		default: // Sine wave.
-			return m_dWaveAmplitude * (sin(dFrequency));
+			return (m_dWaveAmplitude + dTremolo) * (sin(dFrequency));
 		}
 	}
 	
