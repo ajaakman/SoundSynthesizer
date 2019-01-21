@@ -36,9 +36,9 @@ namespace audio
 			if (dAmplitude <= 0.0) bNoteFinished = true;
 
 			double dSound = m_dMasterVolume *
-					 (OSC1.AudioFunction(note.m_dNoteOnTime - GetSampleTime(), (AudioWaveform::Scale(note.m_nNoteID - 24)) - 0.1)
-					+ OSC2.AudioFunction(note.m_dNoteOnTime - GetSampleTime(), (AudioWaveform::Scale(note.m_nNoteID - 12)) + 0.1)
-					+ OSC3.AudioFunction(note.m_dNoteOnTime - GetSampleTime(), (AudioWaveform::Scale(note.m_nNoteID + 0)) + 0.0));
+				(OSC1.AudioFunction(note.m_dNoteOnTime - GetSampleTime(), (AudioWaveform::Scale(note.m_nNoteID - 0)) - 0.1)              
+					+ OSC2.AudioFunction(note.m_dNoteOnTime - GetSampleTime(), (AudioWaveform::Scale(note.m_nNoteID - 12)) + 0.1)      
+					+ OSC3.AudioFunction(note.m_dNoteOnTime - GetSampleTime(), (AudioWaveform::Scale(note.m_nNoteID + 12)) + 0.0));
 
 			dVoice = dAmplitude * dSound;
 
@@ -59,9 +59,11 @@ namespace audio
 
 	double AudioWaveform::Oscillator::AudioFunction(const double dTime, const double dHertz)
 	{
-		double dTremolo = m_dTremoloAmplitude * sin(m_dTremoloFreq * 2.0 * PI * dTime);
-		double dVibrato = m_dVibratoAmplitude * dHertz * sin(m_dVibratoFreq * 2.0 * PI * dTime);
-		double dFrequency = dHertz * 2.0 * PI * dTime + dVibrato;
+		//double dTremolo = 0;
+		//double dVibrato = 0;
+		double dTremolo = m_dTremoloAmplitude * sin(m_dTremoloFreq * PIPI * dTime);
+		double dVibrato = m_dVibratoAmplitude * dHertz * sin(m_dVibratoFreq * PIPI * dTime);
+		double dFrequency = dHertz * PIPI * dTime + dVibrato;
 		
 		switch (m_nWaveType)
 		{

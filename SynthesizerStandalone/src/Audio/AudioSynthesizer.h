@@ -11,7 +11,7 @@
 
 #define SAMPLE_RATE 44100
 #define BLOCK_SIZE 512
-#define BLOCK_COUNT 8
+#define BLOCK_COUNT 16
 
 #define BIT_DEPTH_8 char
 #define BIT_DEPTH_16 short
