@@ -11,7 +11,7 @@ namespace audio
 	{	}
 
 	AudioWaveform::Oscillator::Oscillator()
-		: m_dWaveAmplitude(0.1), m_dWaveFrequency(444.0), m_nWaveType(1), m_nSawParts(50), m_dVibratoFreq(5.0), m_dVibratoAmplitude(0.003), m_dTremoloFreq(0.1), m_dTremoloAmplitude(0.01)
+		: m_dWaveAmplitude(0.1), m_dWaveFrequency(444.0), m_nWaveType(1), m_nSawParts(50), m_dVibratoFreq(5.0), m_dVibratoAmplitude(0.003), m_dTremoloFreq(0.1), m_dTremoloAmplitude(0.01), m_nTune(0), m_dFineTune(0.0)
 	{	}
 
 	AudioWaveform::Note::Note()
@@ -24,7 +24,7 @@ namespace audio
 
 	double AudioWaveform::WaveformFunction()
 	{
-		//std::unique_lock<std::mutex> lm(mutex); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		std::unique_lock<std::mutex> lm(mutex);
 		double dMasterOut = 0.0;
 
 		for (auto &note : m_Notes)
@@ -36,9 +36,9 @@ namespace audio
 			if (dAmplitude <= 0.0) bNoteFinished = true;
 
 			double dSound = m_dMasterVolume *
-				(OSC1.AudioFunction(note.m_dNoteOnTime - GetSampleTime(), (AudioWaveform::Scale(note.m_nNoteID - 0)) - 0.1)              
-					+ OSC2.AudioFunction(note.m_dNoteOnTime - GetSampleTime(), (AudioWaveform::Scale(note.m_nNoteID - 12)) + 0.1)      
-					+ OSC3.AudioFunction(note.m_dNoteOnTime - GetSampleTime(), (AudioWaveform::Scale(note.m_nNoteID + 12)) + 0.0));
+				(OSC1.AudioFunction(note.m_dNoteOnTime - GetSampleTime(), AudioWaveform::Scale(note.m_nNoteID + OSC1.m_nTune) + OSC1.m_dFineTune)
+					+ OSC2.AudioFunction(note.m_dNoteOnTime - GetSampleTime(), AudioWaveform::Scale(note.m_nNoteID + OSC2.m_nTune) + OSC2.m_dFineTune)
+					+ OSC3.AudioFunction(note.m_dNoteOnTime - GetSampleTime(), AudioWaveform::Scale(note.m_nNoteID + OSC3.m_nTune) + OSC3.m_dFineTune));
 
 			dVoice = dAmplitude * dSound;
 
@@ -269,6 +269,76 @@ namespace audio
 			m_dTremoloAmplitude = 1.0;
 		else
 			m_dTremoloAmplitude = dNewAmplitude;
+	}
+
+	void AudioWaveform::Oscillator::SetTune(const int& dNewTune)
+	{
+		if (dNewTune < -36)
+			m_nTune = -36;
+		else if (dNewTune > 36)
+			m_nTune = 36;
+		else
+			m_nTune = dNewTune;
+	}
+
+	void AudioWaveform::Oscillator::SetFineTune(const double& dNewTune)
+	{
+		if (dNewTune < -1.0)
+			m_dFineTune = -1.0;
+		else if (dNewTune > 1.0)
+			m_dFineTune = 1.0;
+		else
+			m_dFineTune = dNewTune;
+	}
+
+	void AudioWaveform::Envelope::SetAttackTime(const double& dNewTime)
+	{
+		if (dNewTime < 0.0)
+			m_dAttackTime = 0.0;
+		else if (dNewTime > 5.0)
+			m_dAttackTime = 5.0;
+		else
+		m_dAttackTime = dNewTime;
+	}
+
+	void AudioWaveform::Envelope::SetStartAmplitude(const double& dNewAmplitude)
+	{
+		if (dNewAmplitude < 0.0)
+			m_dStartAmp = 0.0;
+		else if (dNewAmplitude > 1.0)
+			m_dStartAmp = 1.0;
+		else
+			m_dStartAmp = dNewAmplitude;
+	}
+
+	void AudioWaveform::Envelope::SetDecayTime(const double& dNewTime)
+	{
+		if (dNewTime < 0.0)
+			m_dDecayTime = 0.0;
+		else if (dNewTime > 5.0)
+			m_dDecayTime = 5.0;
+		else
+			m_dDecayTime = dNewTime;
+	}
+
+	void AudioWaveform::Envelope::SetSusatainAmplitude(const double& dNewAmplitude)
+	{
+		if (dNewAmplitude < 0.0)
+			m_dSustainAmp = 0.0;
+		else if (dNewAmplitude > 1.0)
+			m_dSustainAmp = 1.0;
+		else
+			m_dSustainAmp = dNewAmplitude;
+	}
+
+	void AudioWaveform::Envelope::SetReleaseTime(const double& dNewTime)
+	{
+		if (dNewTime < 0.0)
+			m_dReleaseTime = 0.0;
+		else if (dNewTime > 5.0)
+			m_dReleaseTime = 5.0;
+		else
+			m_dReleaseTime = dNewTime;
 	}
 
 }
