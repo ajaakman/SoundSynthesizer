@@ -52,6 +52,12 @@ namespace CSharpSynth
             synth.SetVibratoFrequency(5.0, 3);
 
             Console.ReadLine();
+
+            synth.SetWaveType(2, 0, 1);
+            synth.SetWaveType(2, 0, 2);
+            synth.SetWaveType(2, 0, 3);
+
+            Console.ReadLine();
         }
     }
 }
