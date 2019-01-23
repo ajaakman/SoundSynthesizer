@@ -51,7 +51,20 @@ namespace gui {
 		void	KeyReleasedUp(const int& nKey);
 
 	public:
-		void	SetMasterVolume(const double& dNewVolume);
+		inline void	SetMasterVolume(const double& dNewAmplitude) { m_AudioSynthesizer.SetMasterVolume(dNewAmplitude); }
+		void SetWaveAmplitude(const double& dNewAmplitude, const int& nOSC);
+		void SetWaveType(const unsigned int& nNewWave, const unsigned int& nNewSawParts, const int& nOSC);
+		void SetVibratoFrequency(const double& dNewFrequency, const int& nOSC);
+		void SetVibratoAmplitude(const double& dNewAmplitude, const int& nOSC);
+		void SetTremoloFrequency(const double& dNewFrequency, const int& nOSC);
+		void SetTremoloAmplitude(const double& dNewAmplitude, const int& nOSC);
+		void SetTune(const int& nNewTune, const int& nOSC);
+		void SetFineTune(const double& dNewTune, const int& nOSC);
+		inline void SetAttackTime(const double& dNewTime) { m_AudioSynthesizer.ADSR.SetAttackTime(dNewTime); }
+		inline void SetStartAmplitude(const double& dNewAmplitude) { m_AudioSynthesizer.ADSR.SetStartAmplitude(dNewAmplitude); }
+		inline void SetDecayTime(const double& dNewTime) { m_AudioSynthesizer.ADSR.SetDecayTime(dNewTime); }
+		inline void SetSusatainAmplitude(const double& dNewAmplitude) { m_AudioSynthesizer.ADSR.SetSusatainAmplitude(dNewAmplitude); }
+		inline void SetReleaseTime(const double& dNewTime) { m_AudioSynthesizer.ADSR.SetReleaseTime(dNewTime); }
 	};
 
 	template <class T> void SafeRelease(T **ppT) // Used to safely release resources when device is lost or window is closed.
