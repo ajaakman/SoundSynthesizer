@@ -3,6 +3,7 @@
 #include <math.h>
 #include <atomic>
 #include <vector>
+#include <mutex>
 
 #define SINE_WAVE 0
 #define SQUARE_WAVE 1
@@ -16,8 +17,7 @@
 namespace audio 
 {
 	class AudioWaveform // This class contains audio function used by the AudioSynthesizer class.
-	{	
-
+	{
 	public:
 		struct Oscillator
 		{
@@ -104,7 +104,8 @@ namespace audio
 
 	private:
 		
-		std::vector<Note> m_Notes;
+		std::vector<Note> m_Notes; 
+		std::mutex mutex;// Using a mutex lock anywhere where we're writing to the m_Notes Struct members;
 
 		std::atomic<double> m_dMasterVolume;
 

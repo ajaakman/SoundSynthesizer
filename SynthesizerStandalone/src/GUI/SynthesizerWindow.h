@@ -22,6 +22,8 @@ namespace gui {
 
 		PCWSTR  ClassName() const { return L"Circle Window Class"; } // Register the window class. // Window class. Defines the type of windos we're creating.
 		LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
+		audio::AudioSynthesizer						m_AudioSynthesizer;
+
 	private:
 		ID2D1Factory								*m_pFactory; // The Dierect2D factory creates Render targets and Device-idnependant resources, such as stroke styles and geometries.
 		ID2D1HwndRenderTarget						*m_pRenderTarget; // Render target that is associated with the application window.
@@ -48,7 +50,6 @@ namespace gui {
 		void	KeyReleasedUp(const int& nKey);
 
 	public:
-		audio::AudioSynthesizer						 m_AudioSynthesizer;
 		void PianoKeyPress(const int& nKey);
 		void PianoKeyRelease(const int& nKey);		
 	};

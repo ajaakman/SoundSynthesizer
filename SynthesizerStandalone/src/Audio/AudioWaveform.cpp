@@ -1,11 +1,8 @@
 #include "AudioWaveform.h"
 #include <iostream>
-#include <mutex>
 
 namespace audio
-{		
-	std::mutex mutex;// Using a mutex lock anywhere where we're writing to the m_Notes Struct members;
-
+{			
 	AudioWaveform::AudioWaveform()
 		: m_dMasterVolume(0.02)
 	{	}
@@ -59,8 +56,6 @@ namespace audio
 
 	double AudioWaveform::Oscillator::AudioFunction(const double dTime, const double dHertz)
 	{
-		//double dTremolo = 0;
-		//double dVibrato = 0;
 		double dTremolo = m_dTremoloAmplitude * sin(m_dTremoloFreq * PIPI * dTime);
 		double dVibrato = m_dVibratoAmplitude * dHertz * sin(m_dVibratoFreq * PIPI * dTime);
 		double dFrequency = dHertz * PIPI * dTime + dVibrato;
@@ -340,5 +335,4 @@ namespace audio
 		else
 			m_dReleaseTime = dNewTime;
 	}
-
 }

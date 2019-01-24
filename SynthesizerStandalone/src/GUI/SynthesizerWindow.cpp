@@ -10,39 +10,6 @@ namespace gui {
 		{
 			if (IsKeyWhite(i)) m_nNumofWhiteKeys += 1;
 		}
-
-		/*m_AudioSynthesizer.OSC1.SetWaveType(SAW_WAVE);
-		m_AudioSynthesizer.OSC1.SetWaveAmplitude(0.8);
-		m_AudioSynthesizer.OSC1.SetVibratoAmplitude(0.003);
-		m_AudioSynthesizer.OSC1.SetVibratoFrequency(5.0);
-		m_AudioSynthesizer.OSC1.SetTremoloAmplitude(0.1);
-		m_AudioSynthesizer.OSC1.SetTremoloFrequency(5.0);
-		m_AudioSynthesizer.OSC1.SetTune(-12);
-		m_AudioSynthesizer.OSC1.SetFineTune(0.0);
-
-		m_AudioSynthesizer.OSC2.SetWaveType(SQUARE_WAVE, 50);
-		m_AudioSynthesizer.OSC2.SetWaveAmplitude(0.5);
-		m_AudioSynthesizer.OSC2.SetVibratoAmplitude(1);
-		m_AudioSynthesizer.OSC2.SetVibratoFrequency(0.003);
-		m_AudioSynthesizer.OSC2.SetTremoloAmplitude(0.1);
-		m_AudioSynthesizer.OSC2.SetTremoloFrequency(5.0);
-		m_AudioSynthesizer.OSC2.SetTune(0);
-		m_AudioSynthesizer.OSC2.SetFineTune(-0.1);
-
-		m_AudioSynthesizer.OSC3.SetWaveType(TRIANGLE_WAVE);
-		m_AudioSynthesizer.OSC3.SetWaveAmplitude(0.7);
-		m_AudioSynthesizer.OSC3.SetVibratoAmplitude(0.003);
-		m_AudioSynthesizer.OSC3.SetVibratoFrequency(5.0);
-		m_AudioSynthesizer.OSC3.SetTremoloAmplitude(0.1);
-		m_AudioSynthesizer.OSC3.SetTremoloFrequency(5.0);
-		m_AudioSynthesizer.OSC3.SetTune(12);
-		m_AudioSynthesizer.OSC3.SetFineTune(0.1);
-
-		m_AudioSynthesizer.ADSR.SetAttackTime(0.0);
-		m_AudioSynthesizer.ADSR.SetDecayTime(0.0);
-		m_AudioSynthesizer.ADSR.SetReleaseTime(1.0);
-		m_AudioSynthesizer.ADSR.SetStartAmplitude(1.0);
-		m_AudioSynthesizer.ADSR.SetSusatainAmplitude(0.5);*/
 	}
 
 	SynthesizerWindow::~SynthesizerWindow()
@@ -314,7 +281,6 @@ namespace gui {
 				}
 			}
 		}
-
 	}
 
 	bool SynthesizerWindow::HitTest(const int& nX, const int& nY, const D2D1_ROUNDED_RECT& key)
