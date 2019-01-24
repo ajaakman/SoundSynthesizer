@@ -28,7 +28,6 @@ namespace gui {
 		ID2D1LinearGradientBrush					*m_pGradiantBrush;	
 		std::array<D2D1_ROUNDED_RECT, NUM_OF_KEYS>	 m_PianoKeys;
 		std::array<bool, NUM_OF_KEYS>				 m_bIsKeyPressed;
-		audio::AudioSynthesizer						 m_AudioSynthesizer;
 		std::array<int, 21>							 m_nKeyCodes{ 81, 50, 87, 51, 69, 82, 53, 84, 54, 89, 55, 85, 73, 57, 79, 48, 80, 219, 187, 221, 8 };
 		unsigned int								 m_nLastKeyClick;
 		unsigned int								 m_nNumofWhiteKeys;
@@ -49,22 +48,9 @@ namespace gui {
 		void	KeyReleasedUp(const int& nKey);
 
 	public:
+		audio::AudioSynthesizer						 m_AudioSynthesizer;
 		void PianoKeyPress(const int& nKey);
-		void PianoKeyRelease(const int& nKey);
-		inline void	SetMasterVolume(const double& dNewAmplitude) { m_AudioSynthesizer.SetMasterVolume(dNewAmplitude); }
-		void SetWaveAmplitude(const double& dNewAmplitude, const int& nOSC);
-		void SetWaveType(const unsigned int& nNewWave, const unsigned int& nNewSawParts, const int& nOSC);
-		void SetVibratoFrequency(const double& dNewFrequency, const int& nOSC);
-		void SetVibratoAmplitude(const double& dNewAmplitude, const int& nOSC);
-		void SetTremoloFrequency(const double& dNewFrequency, const int& nOSC);
-		void SetTremoloAmplitude(const double& dNewAmplitude, const int& nOSC);
-		void SetTune(const int& nNewTune, const int& nOSC);
-		void SetFineTune(const double& dNewTune, const int& nOSC);
-		inline void SetAttackTime(const double& dNewTime) { m_AudioSynthesizer.ADSR.SetAttackTime(dNewTime); }
-		inline void SetStartAmplitude(const double& dNewAmplitude) { m_AudioSynthesizer.ADSR.SetStartAmplitude(dNewAmplitude); }
-		inline void SetDecayTime(const double& dNewTime) { m_AudioSynthesizer.ADSR.SetDecayTime(dNewTime); }
-		inline void SetSusatainAmplitude(const double& dNewAmplitude) { m_AudioSynthesizer.ADSR.SetSusatainAmplitude(dNewAmplitude); }
-		inline void SetReleaseTime(const double& dNewTime) { m_AudioSynthesizer.ADSR.SetReleaseTime(dNewTime); }
+		void PianoKeyRelease(const int& nKey);		
 	};
 
 	template <class T> void SafeRelease(T **ppT) // Used to safely release resources when device is lost or window is closed.

@@ -370,53 +370,5 @@ namespace gui {
 		m_AudioSynthesizer.NoteReleased(nKey);
 		OnPaint();
 	}
-
-	void SynthesizerWindow::SetWaveAmplitude(const double& dNewAmplitude, const int& nOSC)
-	{
-		if (nOSC == 1) m_AudioSynthesizer.OSC1.SetWaveAmplitude(dNewAmplitude);
-		else if (nOSC == 2) m_AudioSynthesizer.OSC2.SetWaveAmplitude(dNewAmplitude);
-		else m_AudioSynthesizer.OSC3.SetWaveAmplitude(dNewAmplitude);
-	}
-	void SynthesizerWindow::SetWaveType(const unsigned int& nNewWave, const unsigned int& nNewSawParts, const int& nOSC)
-	{
-		if (nOSC == 1) m_AudioSynthesizer.OSC1.SetWaveType(nNewWave, nNewSawParts);
-		else if (nOSC == 2) m_AudioSynthesizer.OSC2.SetWaveType(nNewWave, nNewSawParts);
-		else m_AudioSynthesizer.OSC3.SetWaveType(nNewWave, nNewSawParts);
-	}
-	void SynthesizerWindow::SetVibratoFrequency(const double& dNewFrequency, const int& nOSC)
-	{
-		if (nOSC == 1) m_AudioSynthesizer.OSC1.SetVibratoFrequency(dNewFrequency);
-		else if (nOSC == 2) m_AudioSynthesizer.OSC2.SetVibratoFrequency(dNewFrequency);
-		else m_AudioSynthesizer.OSC3.SetVibratoFrequency(dNewFrequency);
-	}
-	void SynthesizerWindow::SetVibratoAmplitude(const double& dNewAmplitude, const int& nOSC)
-	{
-		if (nOSC == 1) m_AudioSynthesizer.OSC1.SetVibratoAmplitude(dNewAmplitude);
-		else if (nOSC == 2) m_AudioSynthesizer.OSC2.SetVibratoAmplitude(dNewAmplitude);
-		else m_AudioSynthesizer.OSC3.SetVibratoAmplitude(dNewAmplitude);
-	}
-	void SynthesizerWindow::SetTremoloFrequency(const double& dNewFrequency, const int& nOSC) 
-	{
-		if (nOSC == 1) m_AudioSynthesizer.OSC1.SetTremoloFrequency(dNewFrequency);
-		else if (nOSC == 2) m_AudioSynthesizer.OSC2.SetTremoloFrequency(dNewFrequency);
-		else m_AudioSynthesizer.OSC3.SetTremoloFrequency(dNewFrequency);
-	}
-	void SynthesizerWindow::SetTremoloAmplitude(const double& dNewAmplitude, const int& nOSC)
-	{
-		if (nOSC == 1) m_AudioSynthesizer.OSC1.SetTremoloAmplitude(dNewAmplitude);
-		else if (nOSC == 2) m_AudioSynthesizer.OSC2.SetTremoloAmplitude(dNewAmplitude);
-		else m_AudioSynthesizer.OSC3.SetTremoloAmplitude(dNewAmplitude);
-	}
-	void SynthesizerWindow::SetTune(const int& nNewTune, const int& nOSC)
-	{
-		if (nOSC == 1) m_AudioSynthesizer.OSC1.SetTune(nNewTune);
-		else if (nOSC == 2) m_AudioSynthesizer.OSC2.SetTune(nNewTune);
-		else m_AudioSynthesizer.OSC3.SetTune(nNewTune);
-	}
-	void SynthesizerWindow::SetFineTune(const double& dNewTune, const int& nOSC)
-	{
-		if (nOSC == 1) m_AudioSynthesizer.OSC1.SetFineTune(dNewTune);
-		else if (nOSC == 2) m_AudioSynthesizer.OSC2.SetFineTune(dNewTune);
-		else m_AudioSynthesizer.OSC3.SetFineTune(dNewTune);
-	}
+	
 }
