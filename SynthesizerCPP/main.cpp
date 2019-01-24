@@ -16,7 +16,7 @@ int main()
 {	
 	clr::TestWindow window;	
 	std::cout << "Hello" << std::endl;
-
+	std::cin.get();
 	window.SetMasterVolume(0.1);
 	window.SetAttackTime(0.0);
 	window.SetDecayTime(0.0);
@@ -54,6 +54,9 @@ int main()
 	window.SetVibratoAmplitude(0.003, 3);
 	window.SetVibratoFrequency(5.0, 3);
 
+	std::cin.get();
+	window.SetMasterVolume(0.1);
+	std::cin.get();
 	std::cin.get();
 	std::cin.get();
 

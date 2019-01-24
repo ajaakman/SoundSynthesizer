@@ -46,11 +46,11 @@ namespace gui {
 		bool	HitTest(const int& nX, const int& nY, const D2D1_ROUNDED_RECT& key); // Check to see which key the user clicked.
 		bool	IsKeyWhite(int nKey);
 		bool	IsBlackKeySkip(int nKey);
-		void    PianoKeyPress(const int& nKey);
-		void    PianoKeyRelease(const int& nKey);
 		void	KeyReleasedUp(const int& nKey);
 
 	public:
+		void PianoKeyPress(const int& nKey);
+		void PianoKeyRelease(const int& nKey);
 		inline void	SetMasterVolume(const double& dNewAmplitude) { m_AudioSynthesizer.SetMasterVolume(dNewAmplitude); }
 		void SetWaveAmplitude(const double& dNewAmplitude, const int& nOSC);
 		void SetWaveType(const unsigned int& nNewWave, const unsigned int& nNewSawParts, const int& nOSC);

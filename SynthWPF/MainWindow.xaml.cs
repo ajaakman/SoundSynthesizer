@@ -30,7 +30,7 @@ namespace SynthWPF
             synth.SetMasterVolume(0.1);
             synth.SetAttackTime(0.0);
             synth.SetDecayTime(0.0);
-            synth.SetReleaseTime(5.0);
+            synth.SetReleaseTime(1.0);
             synth.SetStartAmplitude(1.0);
             synth.SetSusatainAmplitude(1.0);
 
@@ -68,6 +68,7 @@ namespace SynthWPF
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             synth.SetMasterVolume(slValue.Value);
+            synth.PianoKeyPress(0);
         }
 
     }
