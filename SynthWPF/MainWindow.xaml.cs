@@ -65,10 +65,101 @@ namespace SynthWPF
             synth.SetVibratoFrequency(5.0, 3);
         }
 
+        private void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Q)
+                synth.PianoKeyPress(0);
+            else if (e.Key == Key.D2)
+                synth.PianoKeyPress(1);
+            else if (e.Key == Key.W)
+                synth.PianoKeyPress(2);
+            else if (e.Key == Key.D3)
+                synth.PianoKeyPress(3);
+            else if (e.Key == Key.E)
+                synth.PianoKeyPress(4);
+            else if (e.Key == Key.R)
+                synth.PianoKeyPress(5);
+            else if (e.Key == Key.D5)
+                synth.PianoKeyPress(6);
+            else if (e.Key == Key.T)
+                synth.PianoKeyPress(7);
+            else if (e.Key == Key.D6)
+                synth.PianoKeyPress(8);
+            else if (e.Key == Key.Y)
+                synth.PianoKeyPress(9);
+            else if (e.Key == Key.D7)
+                synth.PianoKeyPress(10);
+            else if (e.Key == Key.U)
+                synth.PianoKeyPress(11);
+            else if (e.Key == Key.I)
+                synth.PianoKeyPress(12);
+            else if (e.Key == Key.D9)
+                synth.PianoKeyPress(13);
+            else if (e.Key == Key.O)
+                synth.PianoKeyPress(14);
+            else if (e.Key == Key.D0)
+                synth.PianoKeyPress(15);
+            else if (e.Key == Key.P)
+                synth.PianoKeyPress(16);
+            else if (e.Key == Key.OemOpenBrackets)
+                synth.PianoKeyPress(17);
+            else if (e.Key == Key.OemPlus)
+                synth.PianoKeyPress(18);
+            else if (e.Key == Key.OemCloseBrackets)
+                synth.PianoKeyPress(19);
+            else if (e.Key == Key.Back)
+                synth.PianoKeyPress(20);
+        }
+
+        private void OnKeyUpHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Q)
+                synth.PianoKeyRelease(0);
+            else if (e.Key == Key.D2)
+                synth.PianoKeyRelease(1);
+            else if (e.Key == Key.W)
+                synth.PianoKeyRelease(2);
+            else if (e.Key == Key.D3)
+                synth.PianoKeyRelease(3);
+            else if (e.Key == Key.E)
+                synth.PianoKeyRelease(4);
+            else if (e.Key == Key.R)
+                synth.PianoKeyRelease(5);
+            else if (e.Key == Key.D5)
+                synth.PianoKeyRelease(6);
+            else if (e.Key == Key.T)
+                synth.PianoKeyRelease(7);
+            else if (e.Key == Key.D6)
+                synth.PianoKeyRelease(8);
+            else if (e.Key == Key.Y)
+                synth.PianoKeyRelease(9);
+            else if (e.Key == Key.D7)
+                synth.PianoKeyRelease(10);
+            else if (e.Key == Key.U)
+                synth.PianoKeyRelease(11);
+            else if (e.Key == Key.I)
+                synth.PianoKeyRelease(12);
+            else if (e.Key == Key.D9)
+                synth.PianoKeyRelease(13);
+            else if (e.Key == Key.O)
+                synth.PianoKeyRelease(14);
+            else if (e.Key == Key.D0)
+                synth.PianoKeyRelease(15);
+            else if (e.Key == Key.P)
+                synth.PianoKeyRelease(16);
+            else if (e.Key == Key.OemOpenBrackets)
+                synth.PianoKeyRelease(17);
+            else if (e.Key == Key.OemPlus)
+                synth.PianoKeyRelease(18);
+            else if (e.Key == Key.OemCloseBrackets)
+                synth.PianoKeyRelease(19);
+            else if (e.Key == Key.Back)
+                synth.PianoKeyRelease(20);
+        }
+
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             synth.SetMasterVolume(slValue.Value);
-            synth.PianoKeyPress(0);
         }
 
     }

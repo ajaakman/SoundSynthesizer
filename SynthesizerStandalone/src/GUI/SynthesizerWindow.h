@@ -47,11 +47,11 @@ namespace gui {
 		bool	HitTest(const int& nX, const int& nY, const D2D1_ROUNDED_RECT& key); // Check to see which key the user clicked.
 		bool	IsKeyWhite(int nKey);
 		bool	IsBlackKeySkip(int nKey);
-		void	KeyReleasedUp(const int& nKey);
 
-	public:
-		void PianoKeyPress(const int& nKey);
 		void PianoKeyRelease(const int& nKey);		
+	public:
+		void KeyReleasedUp(const int& nKey);
+		void PianoKeyPress(const int& nKey);
 	};
 
 	template <class T> void SafeRelease(T **ppT) // Used to safely release resources when device is lost or window is closed.

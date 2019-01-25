@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SynthWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-        <DockPanel VerticalAlignment = "Center" Margin="10">
-            <TextBox Text = "{Binding ElementName=slValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+        Title="MainWindow" Height="450" Width="800" KeyDown="OnKeyDownHandler" KeyUp="OnKeyUpHandler">
+    <DockPanel VerticalAlignment = "Center" Margin="10">
+        <TextBox Text = "{Binding ElementName=slValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
             <Slider Maximum = "0.1" TickPlacement="BottomRight" TickFrequency="0.01" Name="slValue" ValueChanged="Slider_ValueChanged"/>
         </DockPanel>
 </Window>

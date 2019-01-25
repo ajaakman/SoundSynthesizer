@@ -157,7 +157,7 @@ namespace clr
 	void TestWindow::PianoKeyRelease(const int& nKey)
 	{
 		if (synth != nullptr)
-			((gui::SynthesizerWindow*)synth)->PianoKeyRelease(nKey);
+			((gui::SynthesizerWindow*)synth)->KeyReleasedUp(nKey);
 	}
 
 }
