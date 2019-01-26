@@ -15,7 +15,7 @@ namespace clr
 		gui::SynthesizerWindow window;
 		synth = &window;
 
-		((gui::SynthesizerWindow*)synth)->Create(L"Audio Synthesizer by Artur Jaakman. Use Q2W3ER... Keys to Play!", WS_OVERLAPPEDWINDOW); // Create window with name "Synthesizer" and style Overlapped.		
+		((gui::SynthesizerWindow*)synth)->Create(L"Audio Synthesizer by Artur Jaakman. Use Q2W3ER... Keys to Play!", WS_OVERLAPPEDWINDOW, 0, 796, 404, 1024, 576); // Create window with name "Synthesizer" and style Overlapped.		
 
 		ShowWindow(((gui::SynthesizerWindow*)synth)->Window(), 1);
 	

@@ -23,6 +23,8 @@ namespace SynthWPF
     {
         CLISynth synth = new CLISynth();
 
+        enum Wave { Sine, Square, Saw, Triange, AnalogSaw, Noise };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -35,12 +37,12 @@ namespace SynthWPF
             synth.SetSusatainAmplitude(1.0);
 
             synth.SetWaveAmplitude(0.3, 1);
-            synth.SetWaveAmplitude(0.4, 2);
-            synth.SetWaveAmplitude(0.5, 3);
+            synth.SetWaveAmplitude(0.0, 2);
+            synth.SetWaveAmplitude(0.0, 3);
 
-            synth.SetWaveType(2, 0, 1);
-            synth.SetWaveType(1, 0, 2);
-            synth.SetWaveType(3, 0, 3);
+            synth.SetWaveType((uint)Wave.Square, 0, 1);
+            synth.SetWaveType((uint)Wave.Saw, 0, 2);
+            synth.SetWaveType((uint)Wave.Triange, 0, 3);
 
             synth.SetTune(-12, 1);
             synth.SetTune(0, 2);
@@ -155,11 +157,192 @@ namespace SynthWPF
                 synth.PianoKeyRelease(19);
             else if (e.Key == Key.Back)
                 synth.PianoKeyRelease(20);
+        }        
+
+        private void slMasterAmplitude_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetMasterVolume(slMasterAmplitude.Value);
         }
 
-        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void slAttackTime_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            synth.SetMasterVolume(slValue.Value);
+            synth.SetAttackTime(slAttackTime.Value);
+        }
+
+        private void slStartAmplitude_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetStartAmplitude(slStartAmplitude.Value);
+        }
+
+        private void slDecayTime_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetDecayTime(slDecayTime.Value);
+        }
+
+        private void slSustainAmplitude_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetSusatainAmplitude(slSustainAmplitude.Value);
+        }
+
+        private void slReleaseTime_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetReleaseTime(slReleaseTime.Value);
+        }
+        /////////////////////////////
+        private void slOSC1Amplitude_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetWaveAmplitude(slOSC1Amplitude.Value, 1);
+        }                
+
+        private void slOSC1Tune_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetTune((int)slOSC1Tune.Value, 1);
+        }
+
+        private void slOSC1FineTune_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetFineTune(slOSC1FineTune.Value, 1);
+        }
+
+        private void OSC1Wave_Checked(object sender, RoutedEventArgs e)
+        {
+            var radioButton = sender as RadioButton;
+            if (radioButton == null)
+                return;
+            if (radioButton.Content.ToString() == "Sine")
+                synth.SetWaveType((uint)Wave.Sine, 0, 1);
+            else if (radioButton.Content.ToString() == "Saw")
+                synth.SetWaveType((uint)Wave.Saw, 0, 1);
+            else if (radioButton.Content.ToString() == "Square")
+                synth.SetWaveType((uint)Wave.Square, 0, 1);
+            else if (radioButton.Content.ToString() == "Triangle")
+                synth.SetWaveType((uint)Wave.Triange, 0, 1);
+            else if (radioButton.Content.ToString() == "Noise")
+                synth.SetWaveType((uint)Wave.Noise, 0, 1);
+        }
+
+        private void slOSC1TremAmp_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetTremoloAmplitude(slOSC1TremAmp.Value, 1);
+        }
+
+        private void slOSC1TremFreq_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetTremoloFrequency(slOSC1TremFreq.Value, 1);
+        }
+
+        private void slOSC1VibFreq_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetVibratoFrequency(slOSC1VibFreq.Value, 1);
+        }
+
+        private void slOSC1VibAmp_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetVibratoAmplitude(slOSC1VibAmp.Value, 1);
+        }
+        ///////////////////////
+        private void slOSC2Amplitude_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetWaveAmplitude(slOSC2Amplitude.Value, 2);
+        }
+
+        private void slOSC2Tune_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetTune((int)slOSC2Tune.Value, 2);
+        }
+
+        private void slOSC2FineTune_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetFineTune(slOSC2FineTune.Value, 2);
+        }
+
+        private void OSC2Wave_Checked(object sender, RoutedEventArgs e)
+        {
+            var radioButton = sender as RadioButton;
+            if (radioButton == null)
+                return;
+            if (radioButton.Content.ToString() == "Sine")
+                synth.SetWaveType((uint)Wave.Sine, 0, 2);
+            else if (radioButton.Content.ToString() == "Saw")
+                synth.SetWaveType((uint)Wave.Saw, 0, 2);
+            else if (radioButton.Content.ToString() == "Square")
+                synth.SetWaveType((uint)Wave.Square, 0, 2);
+            else if (radioButton.Content.ToString() == "Triangle")
+                synth.SetWaveType((uint)Wave.Triange, 0, 2);
+            else if (radioButton.Content.ToString() == "Noise")
+                synth.SetWaveType((uint)Wave.Noise, 0, 2);
+        }
+
+        private void slOSC2TremAmp_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetTremoloAmplitude(slOSC2TremAmp.Value, 2);
+        }
+
+        private void slOSC2TremFreq_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetTremoloFrequency(slOSC2TremFreq.Value, 2);
+        }
+
+        private void slOSC2VibFreq_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetVibratoFrequency(slOSC2VibFreq.Value, 2);
+        }
+
+        private void slOSC2VibAmp_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetVibratoAmplitude(slOSC2VibAmp.Value, 2);
+        }
+        ////////////////
+        private void slOSC3Amplitude_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetWaveAmplitude(slOSC3Amplitude.Value, 3);
+        }
+
+        private void slOSC3Tune_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetTune((int)slOSC3Tune.Value, 3);
+        }
+
+        private void slOSC3FineTune_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetFineTune(slOSC3FineTune.Value, 3);
+        }
+
+        private void OSC3Wave_Checked(object sender, RoutedEventArgs e)
+        {
+            var radioButton = sender as RadioButton;
+            if (radioButton == null)
+                return;
+            if (radioButton.Content.ToString() == "Sine")
+                synth.SetWaveType((uint)Wave.Sine, 0, 3);
+            else if (radioButton.Content.ToString() == "Saw")
+                synth.SetWaveType((uint)Wave.Saw, 0, 3);
+            else if (radioButton.Content.ToString() == "Square")
+                synth.SetWaveType((uint)Wave.Square, 0, 3);
+            else if (radioButton.Content.ToString() == "Triangle")
+                synth.SetWaveType((uint)Wave.Triange, 0, 3);
+            else if (radioButton.Content.ToString() == "Noise")
+                synth.SetWaveType((uint)Wave.Noise, 0, 3);
+        }
+
+        private void slOSC3TremAmp_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetTremoloAmplitude(slOSC3TremAmp.Value, 3);
+        }
+
+        private void slOSC3TremFreq_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetTremoloFrequency(slOSC3TremFreq.Value, 3);
+        }
+
+        private void slOSC3VibFreq_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetVibratoFrequency(slOSC3VibFreq.Value, 3);
+        }
+
+        private void slOSC3VibAmp_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            synth.SetVibratoAmplitude(slOSC3VibAmp.Value, 3);
         }
 
     }

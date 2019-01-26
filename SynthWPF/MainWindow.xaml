@@ -5,9 +5,162 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SynthWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" KeyDown="OnKeyDownHandler" KeyUp="OnKeyUpHandler">
-    <DockPanel VerticalAlignment = "Center" Margin="10">
-        <TextBox Text = "{Binding ElementName=slValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
-            <Slider Maximum = "0.1" TickPlacement="BottomRight" TickFrequency="0.01" Name="slValue" ValueChanged="Slider_ValueChanged"/>
-        </DockPanel>
+        Title="MainWindow" Height="576" Width="1024" KeyDown="OnKeyDownHandler" KeyUp="OnKeyUpHandler">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="141*" />
+            <RowDefinition Height="278*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="112*" />
+                <RowDefinition Height="29*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="1" Content="Master Volume" Height="29" VerticalAlignment="Top" Margin="5,0" HorizontalAlignment="Center"/>
+            <Slider Grid.Column="0" Grid.Row="0" Maximum = "0.1" Orientation="Vertical" TickPlacement="BottomRight" TickFrequency="0.1" Name="slMasterAmplitude" ValueChanged="slMasterAmplitude_ValueChanged" HorizontalAlignment="Center" Margin="44,0,45,0" Width="24"/>
+            <Label Grid.Column="1" Grid.Row="1" Content="Attack Time" Height="29" VerticalAlignment="Top" Margin="5,0" HorizontalAlignment="Center"/>
+            <Slider Grid.Column="1" Grid.Row="0" Maximum = "3.0" Orientation="Vertical" TickPlacement="BottomRight" TickFrequency="0.1" Name="slAttackTime" ValueChanged="slAttackTime_ValueChanged" HorizontalAlignment="Center" Margin="44,0,45,0" Width="24"/>
+            <Label Grid.Column="2" Grid.Row="1" Content="Start Amplitude" Height="29" VerticalAlignment="Top" Margin="5,0" HorizontalAlignment="Center"/>
+            <Slider Grid.Column="2" Grid.Row="0" Maximum = "1.0" Orientation="Vertical" TickPlacement="BottomRight" TickFrequency="0.1" Name="slStartAmplitude" ValueChanged="slStartAmplitude_ValueChanged" HorizontalAlignment="Center" Margin="44,0,45,0" Width="24"/>
+            <Label Grid.Column="3" Grid.Row="1" Content="Decay Time" Height="29" VerticalAlignment="Top" Margin="5,0" HorizontalAlignment="Center"/>
+            <Slider Grid.Column="3" Grid.Row="0" Maximum = "2.0" Orientation="Vertical" TickPlacement="BottomRight" TickFrequency="0.1" Name="slDecayTime" ValueChanged="slDecayTime_ValueChanged" HorizontalAlignment="Center" Margin="44,0,45,0" Width="24"/>
+            <Label Grid.Column="4" Grid.Row="1" Content="Sustain Amplitude" Height="29" VerticalAlignment="Top" Margin="5,0" HorizontalAlignment="Center"/>
+            <Slider Grid.Column="4" Grid.Row="0" Maximum = "1.0" Orientation="Vertical" TickPlacement="BottomRight" TickFrequency="0.1" Name="slSustainAmplitude" ValueChanged="slSustainAmplitude_ValueChanged" HorizontalAlignment="Center" Margin="44,0,45,0" Width="24"/>
+            <Label Grid.Column="5" Grid.Row="1" Content="Release Time" Height="29" VerticalAlignment="Top" Margin="5,0" HorizontalAlignment="Center"/>
+            <Slider Grid.Column="5" Grid.Row="0" Maximum = "3.0" Orientation="Vertical" TickPlacement="BottomRight" TickFrequency="0.1" Name="slReleaseTime" ValueChanged="slReleaseTime_ValueChanged" HorizontalAlignment="Center" Margin="44,0,45,0" Width="24"/>
+        </Grid>
+        <Grid Grid.Column="0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Column="0" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" Content="OSC 1 Volume" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="0" Maximum = "1.0" TickPlacement="BottomRight" TickFrequency="0.1" Name="slOSC1Amplitude" ValueChanged="slOSC1Amplitude_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="1" Content="OSC 1 Tune" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="1" Maximum = "24" Minimum="-24" TickPlacement="BottomRight" TickFrequency="1" Name="slOSC1Tune" ValueChanged="slOSC1Tune_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="2" Content="OSC 1 Fine Tune" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="2" Maximum = "1.0" Minimum="-1.0" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC1FineTune" ValueChanged="slOSC1FineTune_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="3" Content="OSC 1 Wave Type" Height="29" Width="103"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC1Wave" Content="Sine" Checked="OSC1Wave_Checked" IsChecked="True" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC1Wave" Content="Saw" Checked="OSC1Wave_Checked" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC1Wave" Content="Square" Checked="OSC1Wave_Checked" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC1Wave" Content="Triangle" Checked="OSC1Wave_Checked" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC1Wave" Content="Noise" Checked="OSC1Wave_Checked" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                <Label Grid.Column="0" Grid.Row="4" Content="Tremolo Amp" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="4" Maximum = "0.5" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC1TremAmp" ValueChanged="slOSC1TremAmp_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="5" Content="Tremolo Freq" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="5" Maximum = "10.0" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC1TremFreq" ValueChanged="slOSC1TremFreq_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="6" Content="Vibrato Amp" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="6" Maximum = "0.01" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC1VibAmp" ValueChanged="slOSC1VibAmp_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="7" Content="Vibrato Freq" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="7" Maximum = "10.0" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC1VibFreq" ValueChanged="slOSC1VibFreq_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+            </Grid>
+
+            <Grid Grid.Column="1" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" Content="OSC 2 Volume" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="0" Maximum = "1.0" TickPlacement="BottomRight" TickFrequency="0.1" Name="slOSC2Amplitude" ValueChanged="slOSC2Amplitude_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="1" Content="OSC 2 Tune" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="1" Maximum = "24" Minimum="-24" TickPlacement="BottomRight" TickFrequency="1" Name="slOSC2Tune" ValueChanged="slOSC2Tune_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="2" Content="OSC 2 Fine Tune" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="2" Maximum = "1.0" Minimum="-1.0" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC2FineTune" ValueChanged="slOSC2FineTune_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="3" Content="OSC 2 Wave Type" Height="29" Width="103"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC2Wave" Content="Sine" Checked="OSC2Wave_Checked" IsChecked="True" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC2Wave" Content="Saw" Checked="OSC2Wave_Checked" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC2Wave" Content="Square" Checked="OSC2Wave_Checked" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC2Wave" Content="Triangle" Checked="OSC2Wave_Checked" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC2Wave" Content="Noise" Checked="OSC2Wave_Checked" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>                
+                <Label Grid.Column="0" Grid.Row="4" Content="Tremolo Amp" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="4" Maximum = "0.5" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC2TremAmp" ValueChanged="slOSC2TremAmp_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="5" Content="Tremolo Freq" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="5" Maximum = "10.0" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC2TremFreq" ValueChanged="slOSC2TremFreq_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="6" Content="Vibrato Amp" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="6" Maximum = "0.01" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC2VibAmp" ValueChanged="slOSC2VibAmp_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="7" Content="Vibrato Freq" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="7" Maximum = "10.0" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC2VibFreq" ValueChanged="slOSC2VibFreq_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+            </Grid>
+
+            <Grid Grid.Column="2" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" Content="OSC 3 Volume" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="0" Maximum = "1.0" TickPlacement="BottomRight" TickFrequency="0.1" Name="slOSC3Amplitude" ValueChanged="slOSC3Amplitude_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="1" Content="OSC 3 Tune" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="1" Maximum = "24" Minimum="-24" TickPlacement="BottomRight" TickFrequency="1" Name="slOSC3Tune" ValueChanged="slOSC3Tune_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="2" Content="OSC 3 Fine Tune" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="2" Maximum = "1.0" Minimum="-1.0" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC3FineTune" ValueChanged="slOSC3FineTune_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="3" Content="OSC 3 Wave Type" Height="29" Width="103"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC3Wave" Content="Sine" Checked="OSC3Wave_Checked" IsChecked="True" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC3Wave" Content="Saw" Checked="OSC3Wave_Checked" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC3Wave" Content="Square" Checked="OSC3Wave_Checked" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC3Wave" Content="Triangle" Checked="OSC3Wave_Checked" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                <RadioButton Grid.Column="1" Grid.Row="3" GroupName ="OSC3Wave" Content="Noise" Checked="OSC3Wave_Checked" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                <Label Grid.Column="0" Grid.Row="4" Content="Tremolo Amp" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="4" Maximum = "0.5" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC3TremAmp" ValueChanged="slOSC3TremAmp_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="5" Content="Tremolo Freq" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="5" Maximum = "10.0" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC3TremFreq" ValueChanged="slOSC3TremFreq_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="6" Content="Vibrato Amp" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="6" Maximum = "0.01" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC3VibAmp" ValueChanged="slOSC3VibAmp_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+                <Label Grid.Column="0" Grid.Row="7" Content="Vibrato Freq" Height="29" Width="103"/>
+                <Slider Grid.Column="1" Grid.Row="7" Maximum = "10.0" TickPlacement="BottomRight" TickFrequency="0.01" Name="slOSC3VibFreq" ValueChanged="slOSC3VibFreq_ValueChanged" Margin="0" Width="Auto" VerticalAlignment="Center"/>
+            </Grid>
+
+        </Grid>
+    </Grid>
 </Window>
