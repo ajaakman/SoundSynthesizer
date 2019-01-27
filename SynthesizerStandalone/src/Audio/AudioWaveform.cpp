@@ -56,9 +56,9 @@ namespace audio
 
 	double AudioWaveform::Oscillator::AudioFunction(const double dTime, const double dHertz)
 	{
-		double dTremolo = m_dTremoloAmplitude * sin(m_dTremoloFreq * PIPI * dTime);
-		double dVibrato = m_dVibratoAmplitude * dHertz * sin(m_dVibratoFreq * PIPI * dTime);
-		double dFrequency = dHertz * PIPI * dTime + dVibrato;
+		double dTremolo = m_dTremoloAmplitude * sin(m_dTremoloFreq * PI_2<double> * dTime);
+		double dVibrato = m_dVibratoAmplitude * dHertz * sin(m_dVibratoFreq * PI_2<double> * dTime);
+		double dFrequency = dHertz * PI_2<double> * dTime + dVibrato;
 		
 		switch (m_nWaveType)
 		{
@@ -66,10 +66,10 @@ namespace audio
 			return (m_dWaveAmplitude + dTremolo) * signbit((sin(dFrequency)));
 			//return  m_dWaveAmplitude * (sin(dFrequency) > 0.0 ? 1.0 : -1.0);
 		case TRIANGLE_WAVE:
-			return (m_dWaveAmplitude + dTremolo) * (asin(sin(dFrequency)) * 2.0 / PI);
+			return (m_dWaveAmplitude + dTremolo) * (asin(sin(dFrequency)) * 2.0 / PI<double>);
 		case SAW_WAVE:
-			return (m_dWaveAmplitude + dTremolo) * -2 / PI * (atan(1.0 / tan(dHertz * dTime * PI + dVibrato)));
-			//return m_dWaveAmplitude * (((2.0 / PI) * ((dHertz * PI * fmod(dTime, 1.0 / dHertz)) - 1)) );
+			return (m_dWaveAmplitude + dTremolo) * -2 / PI<double> * (atan(1.0 / tan(dHertz * dTime * PI<double> + dVibrato)));
+			//return m_dWaveAmplitude * (((2.0 / PI<double>) * ((dHertz * PI<double> * fmod(dTime, 1.0 / dHertz)) - 1)) );
 		case ANALOG_SAW:
 		{
 			double dOut = 0.0;
@@ -77,7 +77,7 @@ namespace audio
 			for (int i = 1; i < m_nSawParts; ++i)
 				dOut += (sin(i * dFrequency)) / i;
 
-			return (m_dWaveAmplitude + dTremolo) * ((dOut * (2.0 / PI)));
+			return (m_dWaveAmplitude + dTremolo) * ((dOut * (2.0 / PI<double>)));
 		}
 		case NOISE:
 			return (m_dWaveAmplitude + dTremolo) * ((2.0 * ((double)rand() / (double)RAND_MAX) - 1.0) );
@@ -98,7 +98,7 @@ namespace audio
 			if (dLifeTime <= m_dAttackTime)
 				dAmplitude = (dLifeTime / m_dAttackTime) * m_dStartAmp;			
 			// Decay
-			if (dLifeTime > m_dAttackTime && dLifeTime <= (m_dAttackTime * m_dDecayTime))
+			if (dLifeTime > m_dAttackTime && dLifeTime <= (m_dAttackTime + m_dDecayTime))
 				dAmplitude = ((dLifeTime - m_dAttackTime) / m_dDecayTime) * (m_dSustainAmp - m_dStartAmp) + m_dStartAmp;
 			// Sustian 
 			if (dLifeTime > (m_dAttackTime + m_dDecayTime))
@@ -120,10 +120,9 @@ namespace audio
 
 			dAmplitude = ((wf.GetSampleTime() - dTriggerOffTime) / m_dReleaseTime) * (0.0 - dReleaseAmplitude) + dReleaseAmplitude;
 		}
-		if (dAmplitude <= 0.0001)
-		{
-			dAmplitude = 0;
-		}
+
+		if (dAmplitude <= 0.0001)		
+			dAmplitude = 0;		
 
 		return dAmplitude;
 	}	

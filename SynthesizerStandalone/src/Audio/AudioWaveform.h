@@ -11,8 +11,12 @@
 #define TRIANGLE_WAVE 3
 #define ANALOG_SAW 4
 #define NOISE 5
-#define PI   3.141592653589793238463
-#define PIPI 6.283185307179586476926
+
+template<typename T>
+constexpr T PI = T(3.141592653589793238463L);
+
+template<typename T>
+constexpr T PI_2 = T(6.283185307179586476926);
 
 namespace audio 
 {

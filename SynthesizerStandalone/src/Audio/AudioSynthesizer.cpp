@@ -65,22 +65,11 @@ namespace audio
 	double AudioSynthesizer::ClampAudio(const double& dAudio)
 	{		
 		if (dAudio > 1.0)
-		{
-			ClippingAlert();
-			return  1.0;		
-		}
+			return  1.0;
 		else if (dAudio < -1.0)
-		{
-			ClippingAlert();
-			return -1.0;		
-		}
+			return -1.0;
 		else
 			return dAudio;
-	}
-
-	void AudioSynthesizer::ClippingAlert()
-	{
-		std::cout << "Audio Clipping!!!" << std::endl;
 	}
 
 	void AudioSynthesizer::InitSynthesizer() // Sets up our audio format, links the buffer memory with the audio device and opens a new device using the supplied format.

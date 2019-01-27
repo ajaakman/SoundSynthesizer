@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SynthWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="576" Width="1024" KeyDown="OnKeyDownHandler" KeyUp="OnKeyUpHandler">
+        Title="Synthesizer Controls" Height="576" Width="1024" KeyDown="OnKeyDownHandler" KeyUp="OnKeyUpHandler">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
