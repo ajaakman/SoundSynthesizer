@@ -1,4 +1,5 @@
 #pragma once
+#include <windows.h>
 
 namespace clr
 {
@@ -17,6 +18,8 @@ namespace clr
 
 		void PianoKeyRelease(const int& nKey);
 
+		HWND pwndw = nullptr;
+		HWND& GetWindow();
 		// Amplitude multiplier. Range double 0.0 - 1.0
 		void SetMasterVolume(const double& dNewAmplitude);
 		// Oscillator amplitude. Range double 0.0 - 1.0

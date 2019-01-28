@@ -18,6 +18,8 @@ namespace clr
 		((gui::SynthesizerWindow*)synth)->Create(L"Audio Synthesizer by Artur Jaakman. Use Q2W3ER... Keys to Play!", WS_OVERLAPPEDWINDOW, 0, 796, 404, 1024, 576); // Create window with name "Synthesizer" and style Overlapped.		
 
 		ShowWindow(((gui::SynthesizerWindow*)synth)->Window(), 1);
+
+		pwndw = ((gui::SynthesizerWindow*)synth)->Window();
 	
 		MSG msg = {};
 		while (GetMessage(&msg, NULL, 0, 0)) // Run the message loop.
@@ -26,6 +28,7 @@ namespace clr
 			DispatchMessage(&msg); 
 		}
 		synth = nullptr;
+		pwndw = nullptr;
 	}
 
 	TestWindow::~TestWindow()
@@ -158,6 +161,11 @@ namespace clr
 	{
 		if (synth != nullptr)
 			((gui::SynthesizerWindow*)synth)->KeyReleasedUp(nKey);
+	}
+
+	HWND& TestWindow::GetWindow()
+	{
+		return pwndw;
 	}
 
 }

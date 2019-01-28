@@ -25,23 +25,30 @@ namespace SynthWPF
 
         enum Wave { Sine, Square, Saw, Triange, AnalogSaw, Noise };
 
+        unsafe IntPtr GetWindowPointer()
+        {
+            synth.InitWindowPtr();
+            return (IntPtr)synth.pWindow;
+        }
+
         public MainWindow()
         {
             InitializeComponent();
 
-            synth.SetMasterVolume(0.1);
-            synth.SetAttackTime(0.0);
-            synth.SetDecayTime(0.0);
-            synth.SetReleaseTime(1.0);
+            synth.SetMasterVolume(0.09);
+
+            synth.SetAttackTime(0.05);
             synth.SetStartAmplitude(1.0);
-            synth.SetSusatainAmplitude(1.0);
+            synth.SetDecayTime(0.7);
+            synth.SetSusatainAmplitude(0.7);
+            synth.SetReleaseTime(0.7);
 
-            synth.SetWaveAmplitude(0.3, 1);
-            synth.SetWaveAmplitude(0.0, 2);
-            synth.SetWaveAmplitude(0.0, 3);
+            synth.SetWaveAmplitude(0.9, 1);
+            synth.SetWaveAmplitude(0.8, 2);
+            synth.SetWaveAmplitude(1.0, 3);
 
-            synth.SetWaveType((uint)Wave.Square, 0, 1);
-            synth.SetWaveType((uint)Wave.Saw, 0, 2);
+            synth.SetWaveType((uint)Wave.Saw, 0, 1);
+            synth.SetWaveType((uint)Wave.Square, 0, 2);
             synth.SetWaveType((uint)Wave.Triange, 0, 3);
 
             synth.SetTune(-12, 1);
@@ -49,14 +56,14 @@ namespace SynthWPF
             synth.SetTune(12, 3);
 
             synth.SetFineTune(0.0, 1);
-            synth.SetFineTune(-0.1, 2);
-            synth.SetFineTune(0.1, 3);
+            synth.SetFineTune(0.1, 2);
+            synth.SetFineTune(-0.1, 3);
 
-            synth.SetTremoloAmplitude(0.003, 1);
+            synth.SetTremoloAmplitude(0.03, 1);
             synth.SetTremoloFrequency(5.0, 1);
-            synth.SetTremoloAmplitude(0.003, 2);
+            synth.SetTremoloAmplitude(0.03, 2);
             synth.SetTremoloFrequency(5.0, 2);
-            synth.SetTremoloAmplitude(0.003, 3);
+            synth.SetTremoloAmplitude(0.03, 3);
             synth.SetTremoloFrequency(5.0, 3);
 
             synth.SetVibratoAmplitude(0.003, 1);
