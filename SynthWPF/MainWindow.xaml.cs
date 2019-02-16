@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Interop;
 
 namespace SynthWPF
 {
@@ -21,6 +22,7 @@ namespace SynthWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+
         CLISynth synth = new CLISynth();
 
         enum Wave { Sine, Square, Saw, Triange, AnalogSaw, Noise };
@@ -164,7 +166,10 @@ namespace SynthWPF
                 synth.PianoKeyRelease(19);
             else if (e.Key == Key.Back)
                 synth.PianoKeyRelease(20);
-        }        
+        }
+
+        
+
 
         private void slMasterAmplitude_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {

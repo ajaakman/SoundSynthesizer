@@ -6,12 +6,26 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SynthCore", "SynthesizerStandalone\SynthesizerStandalone.vcxproj", "{1CEA95DD-BA0C-4A49-AF0F-BD84D2C459BF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SynthCpp", "SynthesizerCPP\SynthesizerCPP.vcxproj", "{EACC552F-9E2F-46D9-896F-42080FC40B27}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1CEA95DD-BA0C-4A49-AF0F-BD84D2C459BF} = {1CEA95DD-BA0C-4A49-AF0F-BD84D2C459BF}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SynthCLI", "SynthCLI\SynthCLI.vcxproj", "{854EBE9B-A588-4990-9B7C-D622DCD77FC4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1CEA95DD-BA0C-4A49-AF0F-BD84D2C459BF} = {1CEA95DD-BA0C-4A49-AF0F-BD84D2C459BF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpSynth", "CSharpSynth\CSharpSynth.csproj", "{F972E4AC-C091-42A5-9529-06E03A3D82CC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{854EBE9B-A588-4990-9B7C-D622DCD77FC4} = {854EBE9B-A588-4990-9B7C-D622DCD77FC4}
+		{1CEA95DD-BA0C-4A49-AF0F-BD84D2C459BF} = {1CEA95DD-BA0C-4A49-AF0F-BD84D2C459BF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynthWPF", "SynthWPF\SynthWPF.csproj", "{48EFEB06-6EF2-45CD-9E78-6B293A2AF5C0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{854EBE9B-A588-4990-9B7C-D622DCD77FC4} = {854EBE9B-A588-4990-9B7C-D622DCD77FC4}
+		{1CEA95DD-BA0C-4A49-AF0F-BD84D2C459BF} = {1CEA95DD-BA0C-4A49-AF0F-BD84D2C459BF}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

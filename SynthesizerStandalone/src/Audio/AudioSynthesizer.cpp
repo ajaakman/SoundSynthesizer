@@ -47,7 +47,7 @@ namespace audio
 
 			for (int i = 0; i < s_nBlockSize; ++i) // Loop through all the samples in the block and fill the audio buffer with data.
 			{
-				m_arrAudioBuffer[(nCurrentBlock * s_nBlockSize) + i] = (BIT_DEPTH)(ClampAudio(WaveformFunction()) * pow(2, (m_iBUFFER_TYPE_SIZE * 8) - 1)); // Iterating through each sample in the nCurrentBlock = (Volume multiplier to protect us) * (Our audio function * time) * (Scaling our function from (-1 to 1) to correct Bit Depth). WaveformFunction() gets inherited from the AudioWavefrom class.
+				m_arrAudioBuffer[(nCurrentBlock * s_nBlockSize) + i] = (BIT_DEPTH)(ClampAudio(WaveformFunction()) * pow(2, (m_iBUFFER_TYPE_SIZE * 8) - 1) - 1); // Iterating through each sample in the nCurrentBlock = (Volume multiplier to protect us) * (Our audio function * time) * (Scaling our function from (-1 to 1) to correct Bit Depth). WaveformFunction() gets inherited from the AudioWavefrom class.
 				m_dSampleTime = m_dSampleTime + (1.0 / s_nSampleFrequency); // Incrementing our dbSampleTime by time step.
 			}
 
@@ -64,10 +64,10 @@ namespace audio
 
 	double AudioSynthesizer::ClampAudio(const double& dAudio)
 	{		
-		if (dAudio > 1.0)
-			return  1.0;
-		else if (dAudio < -1.0)
-			return -1.0;
+		if (dAudio > 0.99)
+			return  0.99;
+		else if (dAudio < -0.99)
+			return -0.99;
 		else
 			return dAudio;
 	}
