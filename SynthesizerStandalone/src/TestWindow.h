@@ -7,19 +7,18 @@ namespace clr
 	{
 	private:
 		void InitMessageLoop();
-
 	public:
 		TestWindow();
 		~TestWindow();
 
-		void* synth = nullptr;
+		HWND Create(const wchar_t* lpWindowName = L"Audio Synthesizer by Artur Jaakman. Use Q2W3ER... Keys to Play!", DWORD dwStyle = WS_OVERLAPPEDWINDOW, DWORD dwExStyle = 0, int x = 796, int y = 404, int width = 1024, int height = 576, HWND hWNDWParent = (HWND)0, HMENU hmenu = (HMENU)0);
+
+		void* synth;
 
 		void PianoKeyPress(const int& nKey);
 
 		void PianoKeyRelease(const int& nKey);
-
-		HWND pwndw = nullptr;
-		HWND& GetWindow();
+		
 		// Amplitude multiplier. Range double 0.0 - 1.0
 		void SetMasterVolume(const double& dNewAmplitude);
 		// Oscillator amplitude. Range double 0.0 - 1.0

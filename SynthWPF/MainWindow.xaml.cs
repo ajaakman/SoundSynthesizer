@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Interop;
+using System.Threading;
 
 namespace SynthWPF
 {
@@ -26,16 +27,22 @@ namespace SynthWPF
         CLISynth synth = new CLISynth();
 
         enum Wave { Sine, Square, Saw, Triange, AnalogSaw, Noise };
-
-        unsafe IntPtr GetWindowPointer()
-        {
-            synth.InitWindowPtr();
-            return (IntPtr)synth.pWindow;
-        }
-
+              
         public MainWindow()
         {
             InitializeComponent();
+            //Thread thr = new Thread(synth.InitMessageLoop);
+            //thr.Start(); 
+            string str = "ABC";
+
+            unsafe
+            {
+                fixed (char* p = str)
+                {
+                    synth.Create(p, 0, 0, 796, 404, 1024, 576, IntPtr.Zero, IntPtr.Zero);
+                }
+            }
+            
 
             synth.SetMasterVolume(0.09);
 
