@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SynthWPF"
         xmlns:views="clr-namespace:SynthWPF.UserControls"
         mc:Ignorable="d"
-        Title="Synthesizer Controls" Height="576" Width="1024" KeyDown="OnKeyDownHandler" KeyUp="OnKeyUpHandler">
+        Title="Synthesizer Controls" Height="576" Width="1024" Loaded="On_UIReady" KeyDown="OnKeyDownHandler" KeyUp="OnKeyUpHandler">
     <Grid Margin="0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -24,7 +24,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="0*" />
+                <ColumnDefinition Width="6*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="120*" />
@@ -43,7 +43,7 @@
             <Label Grid.Column="5" Grid.Row="1" Content="Release Time" Height="29" VerticalAlignment="Top" Margin="5,0" HorizontalAlignment="Center"/>
             <Slider Grid.Column="5" Grid.Row="0" Maximum = "3.0" Orientation="Vertical" TickPlacement="BottomRight" TickFrequency="0.1" Name="slReleaseTime" ValueChanged="slReleaseTime_ValueChanged" HorizontalAlignment="Center" Margin="0" Width="24" IsTabStop="False" IsMoveToPointEnabled="True" Value="0.7"/>
 
-            <Border Grid.Column="6" Grid.Row="0" Name="insertHwndHostHere" BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="2"/>
+            <Border Grid.Column="6" Grid.Row="0" Name="ControlHostElement" BorderBrush="White" BorderThickness="1" Grid.ColumnSpan="1" Grid.RowSpan="1"/>
 
         </Grid>
         <Grid Grid.Column="0" Grid.Row="1" Margin="0,0,30,0">

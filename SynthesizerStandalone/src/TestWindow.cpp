@@ -1,6 +1,5 @@
 #include "TestWindow.h"
 #include "SynthesizerWindow.h"
-#include <thread>
 
 namespace clr
 {
@@ -12,15 +11,15 @@ namespace clr
 
 	TestWindow::~TestWindow()
 	{
-		delete reinterpret_cast<gui::SynthesizerWindow*>(synth);
+		delete synth;
 		synth = nullptr;
 	}
 
 	void TestWindow::InitMessageLoop()
 	{	
-		reinterpret_cast<gui::SynthesizerWindow*>(synth)->Create(L"Audio Synthesizer by Artur Jaakman. Use Q2W3ER... Keys to Play!", WS_OVERLAPPEDWINDOW, 0, 796, 404, 1024, 576); // Create window with name "Synthesizer" and style Overlapped.		
+		synth->Create(L"Audio Synthesizer by Artur Jaakman. Use Q2W3ER... Keys to Play!", WS_OVERLAPPEDWINDOW, 0, 796, 404, 1024, 576); // Create window with name "Synthesizer" and style Overlapped.		
 
-		ShowWindow((reinterpret_cast<gui::SynthesizerWindow*>(synth))->Window(), 1);
+		ShowWindow((synth)->Window(), 1);
 	
 		MSG msg = {};
 		while (GetMessage(&msg, NULL, 0, 0)) // Run the message loop.
@@ -29,32 +28,31 @@ namespace clr
 			DispatchMessage(&msg); 
 		}
 		
-		delete reinterpret_cast<gui::SynthesizerWindow*>(synth);
+		delete synth;
 		synth = nullptr;
 	}
 
 	HWND TestWindow::Create(const wchar_t* lpWindowName, DWORD dwStyle, DWORD dwExStyle, int x, int y, int width, int height, HWND hWNDWParent, HMENU hmenu)
 	{
-		reinterpret_cast<gui::SynthesizerWindow*>(synth)->Create(lpWindowName, dwStyle, dwExStyle, x, y, width, height, hWNDWParent, hmenu); // Create window with name "Synthesizer" and style Overlapped.		
-		ShowWindow((reinterpret_cast<gui::SynthesizerWindow*>(synth))->Window(), 1);
-		//delete reinterpret_cast<gui::SynthesizerWindow*>(synth);
-		//synth = nullptr;
-		return reinterpret_cast<gui::SynthesizerWindow*>(synth)->Window();
+		synth->Create(lpWindowName, dwStyle, dwExStyle, x, y, width, height, hWNDWParent, hmenu); // Create window with name "Synthesizer" and style Overlapped.		
+		ShowWindow((synth)->Window(), 1);
+		
+		return synth->Window();
 	}
 
 	void TestWindow::SetMasterVolume(const double & dNewAmplitude)		
 	{ 
 		if (synth != nullptr)
-			reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.SetMasterVolume(dNewAmplitude);
+			synth->m_AudioSynthesizer.SetMasterVolume(dNewAmplitude);
 	}
 
 	void TestWindow::SetWaveAmplitude(const double& dNewAmplitude, const int& nOSC)
 	{
 		if (synth != nullptr)
 		{
-			if (nOSC == 3) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC3.SetWaveAmplitude(dNewAmplitude);
-			else if (nOSC == 2) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC2.SetWaveAmplitude(dNewAmplitude);
-			else reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC1.SetWaveAmplitude(dNewAmplitude);
+			if (nOSC == 3) synth->m_AudioSynthesizer.OSC3.SetWaveAmplitude(dNewAmplitude);
+			else if (nOSC == 2) synth->m_AudioSynthesizer.OSC2.SetWaveAmplitude(dNewAmplitude);
+			else synth->m_AudioSynthesizer.OSC1.SetWaveAmplitude(dNewAmplitude);
 		}
 	}
 
@@ -62,9 +60,9 @@ namespace clr
 	{
 		if (synth != nullptr)
 		{
-			if (nOSC == 3) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC3.SetWaveType(nNewWave, nNewSawParts);
-			else if (nOSC == 2) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC2.SetWaveType(nNewWave, nNewSawParts);
-			else reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC1.SetWaveType(nNewWave, nNewSawParts);
+			if (nOSC == 3) synth->m_AudioSynthesizer.OSC3.SetWaveType(nNewWave, nNewSawParts);
+			else if (nOSC == 2) synth->m_AudioSynthesizer.OSC2.SetWaveType(nNewWave, nNewSawParts);
+			else synth->m_AudioSynthesizer.OSC1.SetWaveType(nNewWave, nNewSawParts);
 		}
 	}
 
@@ -72,9 +70,9 @@ namespace clr
 	{
 		if (synth != nullptr)
 		{
-			if (nOSC == 3) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC3.SetVibratoFrequency(dNewFrequency);
-			else if (nOSC == 2) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC2.SetVibratoFrequency(dNewFrequency);
-			else reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC1.SetVibratoFrequency(dNewFrequency);
+			if (nOSC == 3) synth->m_AudioSynthesizer.OSC3.SetVibratoFrequency(dNewFrequency);
+			else if (nOSC == 2) synth->m_AudioSynthesizer.OSC2.SetVibratoFrequency(dNewFrequency);
+			else synth->m_AudioSynthesizer.OSC1.SetVibratoFrequency(dNewFrequency);
 		}
 	}
 
@@ -82,9 +80,9 @@ namespace clr
 	{
 		if (synth != nullptr)
 		{
-			if (nOSC == 3) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC3.SetVibratoAmplitude(dNewAmplitude);
-			else if (nOSC == 2) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC2.SetVibratoAmplitude(dNewAmplitude);
-			else reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC1.SetVibratoAmplitude(dNewAmplitude);
+			if (nOSC == 3) synth->m_AudioSynthesizer.OSC3.SetVibratoAmplitude(dNewAmplitude);
+			else if (nOSC == 2) synth->m_AudioSynthesizer.OSC2.SetVibratoAmplitude(dNewAmplitude);
+			else synth->m_AudioSynthesizer.OSC1.SetVibratoAmplitude(dNewAmplitude);
 		}
 	}
 
@@ -92,9 +90,9 @@ namespace clr
 	{
 		if (synth != nullptr)
 		{
-			if (nOSC == 3) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC3.SetTremoloFrequency(dNewFrequency);
-			else if (nOSC == 2) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC2.SetTremoloFrequency(dNewFrequency);
-			else reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC1.SetTremoloFrequency(dNewFrequency);
+			if (nOSC == 3) synth->m_AudioSynthesizer.OSC3.SetTremoloFrequency(dNewFrequency);
+			else if (nOSC == 2) synth->m_AudioSynthesizer.OSC2.SetTremoloFrequency(dNewFrequency);
+			else synth->m_AudioSynthesizer.OSC1.SetTremoloFrequency(dNewFrequency);
 		}
 	}
 
@@ -102,9 +100,9 @@ namespace clr
 	{
 		if (synth != nullptr)
 		{
-			if (nOSC == 3) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC3.SetTremoloAmplitude(dNewAmplitude);
-			else if (nOSC == 2) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC2.SetTremoloAmplitude(dNewAmplitude);
-			else reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC1.SetTremoloAmplitude(dNewAmplitude);
+			if (nOSC == 3) synth->m_AudioSynthesizer.OSC3.SetTremoloAmplitude(dNewAmplitude);
+			else if (nOSC == 2) synth->m_AudioSynthesizer.OSC2.SetTremoloAmplitude(dNewAmplitude);
+			else synth->m_AudioSynthesizer.OSC1.SetTremoloAmplitude(dNewAmplitude);
 		}
 	}
 
@@ -112,9 +110,9 @@ namespace clr
 	{
 		if (synth != nullptr)
 		{
-			if (nOSC == 3) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC3.SetTune(nNewTune);
-			else if (nOSC == 2) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC2.SetTune(nNewTune);
-			else reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC1.SetTune(nNewTune);
+			if (nOSC == 3) synth->m_AudioSynthesizer.OSC3.SetTune(nNewTune);
+			else if (nOSC == 2) synth->m_AudioSynthesizer.OSC2.SetTune(nNewTune);
+			else synth->m_AudioSynthesizer.OSC1.SetTune(nNewTune);
 		}
 	}
 	
@@ -122,51 +120,51 @@ namespace clr
 	{
 		if (synth != nullptr)
 		{
-			if (nOSC == 3) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC3.SetFineTune(dNewTune);
-			else if (nOSC == 2) reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC2.SetFineTune(dNewTune);
-			else reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.OSC1.SetFineTune(dNewTune);
+			if (nOSC == 3) synth->m_AudioSynthesizer.OSC3.SetFineTune(dNewTune);
+			else if (nOSC == 2) synth->m_AudioSynthesizer.OSC2.SetFineTune(dNewTune);
+			else synth->m_AudioSynthesizer.OSC1.SetFineTune(dNewTune);
 		}
 	}
 
 	void TestWindow::SetAttackTime(const double& dNewTime) 
 	{ 
 		if (synth != nullptr)
-			reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.ADSR.SetAttackTime(dNewTime);
+			synth->m_AudioSynthesizer.ADSR.SetAttackTime(dNewTime);
 	}
 
 	void TestWindow::SetStartAmplitude(const double& dNewAmplitude) 
 	{ 
 		if (synth != nullptr)
-			reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.ADSR.SetStartAmplitude(dNewAmplitude);
+			synth->m_AudioSynthesizer.ADSR.SetStartAmplitude(dNewAmplitude);
 	}
 
 	void TestWindow::SetDecayTime(const double& dNewTime)
 	{ 
 		if (synth != nullptr)
-			reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.ADSR.SetDecayTime(dNewTime);
+			synth->m_AudioSynthesizer.ADSR.SetDecayTime(dNewTime);
 	}
 
 	void TestWindow::SetSusatainAmplitude(const double& dNewAmplitude)
 	{ 
 		if (synth != nullptr)
-			reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.ADSR.SetSusatainAmplitude(dNewAmplitude);
+			synth->m_AudioSynthesizer.ADSR.SetSusatainAmplitude(dNewAmplitude);
 	}
 
 	void TestWindow::SetReleaseTime(const double& dNewTime)
 	{
 		if (synth != nullptr)
-			reinterpret_cast<gui::SynthesizerWindow*>(synth)->m_AudioSynthesizer.ADSR.SetReleaseTime(dNewTime);
+			synth->m_AudioSynthesizer.ADSR.SetReleaseTime(dNewTime);
 	}
 
 	void TestWindow::PianoKeyPress(const int& nKey)
 	{
 		if (synth != nullptr)
-			reinterpret_cast<gui::SynthesizerWindow*>(synth)->PianoKeyPress(nKey);
+			synth->PianoKeyPress(nKey);
 	}
 
 	void TestWindow::PianoKeyRelease(const int& nKey)
 	{
 		if (synth != nullptr)
-			reinterpret_cast<gui::SynthesizerWindow*>(synth)->KeyReleasedUp(nKey);
+			synth->KeyReleasedUp(nKey);
 	}
 }

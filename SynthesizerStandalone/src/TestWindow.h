@@ -1,6 +1,11 @@
 #pragma once
 #include <windows.h>
 
+namespace gui
+{
+	class SynthesizerWindow;
+}
+
 namespace clr
 {
 	class TestWindow
@@ -13,7 +18,7 @@ namespace clr
 
 		HWND Create(const wchar_t* lpWindowName = L"Audio Synthesizer by Artur Jaakman. Use Q2W3ER... Keys to Play!", DWORD dwStyle = WS_OVERLAPPEDWINDOW, DWORD dwExStyle = 0, int x = 796, int y = 404, int width = 1024, int height = 576, HWND hWNDWParent = (HWND)0, HMENU hmenu = (HMENU)0);
 
-		void* synth;
+		gui::SynthesizerWindow* synth;
 
 		void PianoKeyPress(const int& nKey);
 

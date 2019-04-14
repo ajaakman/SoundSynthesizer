@@ -113,7 +113,7 @@ namespace gui {
 
 			m_pRenderTarget->BeginDraw(); // Signals start of drawing.
 
-			m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black)); // Fills entire render target with a solid color.
+			m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White)); // Fills entire render target with a solid color.
 
 			for (unsigned int i = 0; i < m_PianoKeys.size(); ++i) // White Key Outline.
 			{			
