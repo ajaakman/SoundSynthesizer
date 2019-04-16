@@ -21,13 +21,21 @@ namespace SynthWPF
         private readonly int HostHeight;
         private readonly int HostWidth;
         private IntPtr HWND_Host;
+        private Midi midi;
 
-        public CLISynth synth = new CLISynth();
+        public CLISynth synth;
 
         public ControlHost(double height, double width)
         {
             HostHeight = (int)height;
             HostWidth = (int)width;
+            synth = new CLISynth();
+            midi = new Midi(synth);
+            if (Midi.InputCount > 0)
+            {
+                midi.Open(0);
+                midi.Start();
+            }
 
             synth.SetMasterVolume(0.09);
 

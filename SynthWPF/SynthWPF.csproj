@@ -116,6 +116,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ControlHost.cs" />
+    <Compile Include="Midi.cs" />
     <Compile Include="UserControls\MasterControlsView.xaml.cs">
       <DependentUpon>MasterControlsView.xaml</DependentUpon>
     </Compile>
